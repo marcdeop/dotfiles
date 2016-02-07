@@ -1,0 +1,56 @@
+altscreen on
+term screen-256color
+bind ',' prev
+bind '.' next
+
+# use X scrolling mechanism
+termcapinfo xterm* ti@:te@
+
+# binding to move across regions
+bind j focus down
+bind k focus up
+bind l focus right
+bind h focus left
+bind t focus top
+bind b focus bottom
+
+# the following two lines give a two-line status, with the current window
+# highlighted
+hardstatus alwayslastline
+hardstatus string '%{dd}♬:%? %{dd}%? %1`%? %= %{= dk}%-w%{+b yk} %n*%t%?(%u)%?%{-}%+w %=%{g}[%{d}%d/%m/%Y%{g}] %{d}%c %{g}]'
+backtick 1 0 5 ${HOME}/Scripts/currentPlayingSong.bash
+
+#caption string "%{= kc}%H–%n (%t)%-5=%{= .m}%0c"
+caption string "%{Ky}%t"
+caption always
+
+# huge scrollback buffer
+defscrollback 5000
+
+# no welcome message
+startup_message off
+
+# 256 colors
+attrcolor b ".I"
+termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+defbce on
+
+# mouse tracking allows to switch region focus by clicking
+mousetrack on
+
+# default windows
+screen -t Shell1  1
+
+# F2 puts Screen into resize mode. Resize regions using hjkl keys.
+bindkey "^[OQ" eval "command -c rsz" # enter resize mode
+
+# use hjkl keys to resize regions
+bind -c rsz h eval "resize -h -5" "command -c rsz"
+bind -c rsz j eval "resize -v -5" "command -c rsz"
+bind -c rsz k eval "resize -v +5" "command -c rsz"
+bind -c rsz l eval "resize -h +5" "command -c rsz"
+
+#
+##  Toggle 'fullscreen' or not.
+bind f eval "caption splitonly" "hardstatus ignore"
+bind F eval "caption always"    "hardstatus alwayslastline"
