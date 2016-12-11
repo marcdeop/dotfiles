@@ -88,12 +88,40 @@ noremap <silent> ,u
 "                                 APPEARANCE                                  "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set t_Co=256
-:colo solarized
-:set background=light
+set background=dark
+colorscheme gruvbox
+
+" specific to one theme
 let g:solarized_visibility="high" "make trailing chars extra visible
+
+" specific to one theme
+let g:one_allow_italics = 1
+
+" specific to gruvbox theme
+let g:gruvbox_italic = 1
+let g:gruvbox_contrast_dark = "soft"
+let g:gruvbox_contrast_light = "hard"
+
+"Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
+"If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
+"(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
+if (empty($TMUX))
+  if (has("nvim"))
+  "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
+  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+  endif
+  "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
+  "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
+  " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
+  if (has("termguicolors"))
+    set termguicolors
+  endif
+endif
+
 " mark 'misplaced' tab characters
 set listchars=tab:·-,trail:·
 set list
+
 " enable reversenumbers and line numbering
 set rnu
 set nu
@@ -152,7 +180,7 @@ let g:EasyMotion_smartcase = 1 " Turn on case insensitive feature
 let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion
 
 " Bi-directional find motion
-nmap s <Plug>(easymotion-s2)
+nmap s <Plug>(easymotion-overwin-f2)
 
 " JKLH motions: Line motions
 map <Leader>j <Plug>(easymotion-j)
@@ -193,7 +221,8 @@ let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#branch#empty_message = ''
 " do not use vcscommand.vim if available
 let g:airline#extensions#branch#use_vcscommand = 0
-let g:airline_theme="base16"
+" airline theme
+let g:airline_theme="gruvbox"
 
 " Fugitive Shortcuts
 nmap <silent> <leader>gs :Gstatus<cr>
@@ -201,28 +230,48 @@ nmap <leader>ge :Gedit<cr>
 nmap <silent><leader>gr :Gread<cr>
 nmap <silent><leader>gb :Gblame<cr>
 
-autocmd BufNewFile install.pp 0r /home/marc/.vim/vimfiles/template_install.pp
-
 """"""""""""""
 "  vim-plug  "
 """"""""""""""
 
 call plug#begin('~/.vim/plugged')
+Plug 'vim-airline/vim-airline'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'thoughtbot/vim-rspec'
 Plug 'wincent/command-t'
 Plug 'scrooloose/syntastic'
 Plug 'tpope/vim-fugitive'
-Plug 'godlygeek/tabular'
 Plug 'sickill/vim-pasta' " context-aware pasting
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-repeat'
-Plug 'easymotion/vim-easymotion'
-" File-type loading
-Plug 'rodjek/vim-puppet', { 'for': 'pp' }
+Plug 'airblade/vim-gitgutter'
 " Group dependencies, vim-snippets depends on ultisnips
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 " On-demand loading ToDO: load nerdtree-git-plugin on nerdtree loading
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
   \ | Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
-" Add plugins to &runtimepath
 call plug#end()
+
+
+set tags=./tags;
+au FileType puppet setlocal isk+=:
+" zoom a vim pane, <C-w>= to re-balance
+nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>
+nnoremap <leader>= :wincmd =<cr>
+
+let g:tmux_navigator_no_mappings = 1
+
+""""""""""
+"  Tmux  "
+""""""""""
+
+nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
+nnoremap <silent> <c-\> :TmuxNavigatePrevious<cr>
+
+" splits navigation
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-h> <c-w>h
+nnoremap <c-l> <c-w>l
 
