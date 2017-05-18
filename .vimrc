@@ -1,3 +1,29 @@
+""""""""""""""
+"  vim-plug  "
+""""""""""""""
+
+call plug#begin('~/.vim/plugged')
+Plug 'stephenmckinney/vim-solarized-powerline'
+Plug 'mileszs/ack.vim'
+Plug 'benmills/vimux'
+Plug 'junegunn/gv.vim'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'morhetz/gruvbox'
+Plug 'w0rp/ale'
+Plug 'majutsushi/tagbar'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'thoughtbot/vim-rspec'
+Plug 'tpope/vim-fugitive'
+Plug 'gregsexton/gitv'
+Plug 'sickill/vim-pasta' " context-aware pasting
+Plug 'airblade/vim-gitgutter'
+" Group dependencies, vim-snippets depends on ultisnips
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+" On-demand loading ToDO: load nerdtree-git-plugin on nerdtree loading
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+  \ | Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
+call plug#end()
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                   GENERAL                                   "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -17,6 +43,7 @@ set incsearch
 set showmatch
 set hlsearch
 set gdefault "substitute everything by default, not only the first entry
+set tags=./tags;
 
 " handling proper lenght of lines
 set wrap
@@ -72,6 +99,12 @@ set ttyfast
 
 set diffopt+=vertical
 
+" Specific filetype options
+au BufRead,BufNewFile *.pp set filetype=puppet
+au FileType puppet setlocal isk+=:
+au FileType puppet nnoremap <c-]> :exe "tag " . substitute(expand("<cword>"), "^::", "", "")<CR>
+au FileType puppet nnoremap <c-w><c-]> :tab split<CR>:exe "tag " . substitute(expand("<cword>"), "^::", "", "")<CR>
+
 " Comment/Uncomment selected lines on ,c/,u in visual mode
 au FileType haskell,vhdl,ada let b:comment_leader = '-- '
 au FileType vim let b:comment_leader = '" '
@@ -88,8 +121,9 @@ noremap <silent> ,u
 "                                 APPEARANCE                                  "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set t_Co=256
-set background=dark
-colorscheme gruvbox
+set background=light
+set termguicolors
+colorscheme solarized
 
 " specific to one theme
 let g:solarized_visibility="high" "make trailing chars extra visible
@@ -98,25 +132,12 @@ let g:solarized_visibility="high" "make trailing chars extra visible
 let g:one_allow_italics = 1
 
 " specific to gruvbox theme
+let g:gruvbox_invert_signs = 1
 let g:gruvbox_italic = 1
 let g:gruvbox_contrast_dark = "soft"
 let g:gruvbox_contrast_light = "hard"
-
-"Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
-"If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
-"(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
-if (empty($TMUX))
-  if (has("nvim"))
-  "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
-  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-  endif
-  "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
-  "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
-  " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
-  if (has("termguicolors"))
-    set termguicolors
-  endif
-endif
+let g:gruvbox_improved_strings = 1
+let g:gruvbox_improved_warnings = 1
 
 " mark 'misplaced' tab characters
 set listchars=tab:·-,trail:·
@@ -147,6 +168,13 @@ set omnifunc=syntaxcomplete#Complete
 "                                   PLUGINS                                   "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+"""""""""
+"  Ack  "
+"""""""""
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+
 """"""""""""""
 "  NERDTree  "
 """"""""""""""
@@ -171,6 +199,17 @@ let g:syntastic_error_symbol = '✗✗'
 let g:syntastic_style_error_symbol = '✠✠'
 let g:syntastic_warning_symbol = '∆∆'
 let g:syntastic_style_warning_symbol = '≈≈'
+
+" allow external sources on shellcheck
+let g:syntastic_sh_shellcheck_args = "-x"
+
+"""""""""
+"  ale  "
+"""""""""
+let g:ale_sign_error = '✗✗'
+let g:ale_sign_warning = '∆∆'
+highlight clear ALEErrorSign
+highlight clear ALEWarningSign
 
 """"""""""""""""
 "  EasyMotion  "
@@ -230,48 +269,58 @@ nmap <leader>ge :Gedit<cr>
 nmap <silent><leader>gr :Gread<cr>
 nmap <silent><leader>gb :Gblame<cr>
 
-""""""""""""""
-"  vim-plug  "
-""""""""""""""
+""""""""""""
+"  tagbar  "
+""""""""""""
+let g:tagbar_type_puppet = {
+  \ 'ctagstype': 'puppet',
+  \ 'kinds': [
+    \'c:class',
+    \'s:site',
+    \'n:node',  
+    \'d:definition',
+    \'r:resource',
+    \'f:default'
+  \]
+\}
 
-call plug#begin('~/.vim/plugged')
-Plug 'vim-airline/vim-airline'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'thoughtbot/vim-rspec'
-Plug 'wincent/command-t'
-Plug 'scrooloose/syntastic'
-Plug 'tpope/vim-fugitive'
-Plug 'sickill/vim-pasta' " context-aware pasting
-Plug 'airblade/vim-gitgutter'
-" Group dependencies, vim-snippets depends on ultisnips
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-" On-demand loading ToDO: load nerdtree-git-plugin on nerdtree loading
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-  \ | Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
-call plug#end()
-
-
-set tags=./tags;
-au FileType puppet setlocal isk+=:
 " zoom a vim pane, <C-w>= to re-balance
 nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>
 nnoremap <leader>= :wincmd =<cr>
 
-let g:tmux_navigator_no_mappings = 1
+
+"""""""""""
+"  Vimux  "
+"""""""""""
+" Run the current file with rspec
+map <Leader>rb :call VimuxRunCommand("clear; rspec " . bufname("%"))<CR>
+
+" Prompt for a command to run
+map <Leader>vp :VimuxPromptCommand<CR>
+
+" Run last command executed by VimuxRunCommand
+map <Leader>vl :VimuxRunLastCommand<CR>
+
+" Inspect runner pane
+map <Leader>vi :VimuxInspectRunner<CR>
+
+" Close vim tmux runner opened by VimuxRunCommand
+map <Leader>vq :VimuxCloseRunner<CR>
+
+" Interrupt any command running in the runner pane
+map <Leader>vx :VimuxInterruptRunner<CR>
+
+" Zoom the runner pane (use <bind-key> z to restore runner pane)
+map <Leader>vz :call VimuxZoomRunner()<CR>
 
 """"""""""
 "  Tmux  "
 """"""""""
 
+let g:tmux_navigator_no_mappings = 1
 nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
 nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
 nnoremap <silent> <c-\> :TmuxNavigatePrevious<cr>
-
-" splits navigation
-nnoremap <c-j> <c-w>j
-nnoremap <c-k> <c-w>k
-nnoremap <c-h> <c-w>h
-nnoremap <c-l> <c-w>l
 
