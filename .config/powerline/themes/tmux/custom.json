@@ -1,0 +1,56 @@
+{
+  "segments": {
+    "right": [
+      {
+        "function": "powerline.segments.common.players.dbus_player",
+        "name": "player",
+        "priority": 50,
+        "args": {
+          "bus_name": "org.mpris.MediaPlayer2.amarok",
+          "player_path": "/org/mpris/MediaPlayer2",
+          "iface_player": "org.mpris.MediaPlayer2.Player",
+          "iface_prop": "org.freedesktop.DBus.Properties"
+        }
+      },
+      {
+        "function": "powerline.segments.common.sys.uptime",
+        "priority": 50,
+        "args": {
+          "shorten_len": 3
+        }
+      },
+      {
+        "function": "powerline.segments.common.sys.system_load",
+        "priority": 50,
+        "args": {
+          "track_cpu_count": true,
+          "threshold_good": 1.4,
+          "threshold_bad": 1.5,
+          "short": false
+        }
+      },
+      {
+        "function": "powerline.segments.common.time.date"
+      },
+      {
+        "function": "powerline.segments.common.time.date",
+        "name": "time",
+        "args": {
+          "format": "%H:%M",
+          "istime": true
+        }
+      },
+      {
+        "function": "powerline.segments.common.net.hostname",
+        "args": {
+          "exclude_domain": true
+        }
+      },
+      {
+        "function": "powerline.segments.common.bat.battery",
+        "args": {
+        }
+      }
+    ]
+  }
+}

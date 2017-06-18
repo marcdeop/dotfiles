@@ -1,0 +1,53 @@
+{
+  "segments": {
+    "left": [
+      {
+        "function": "powerline.segments.common.env.environment",
+        "priority": 30,
+        "args": {
+          "variable": "POWERLINE_VIM_SHELL_INDICATOR"
+        }
+      },
+      {
+        "function": "powerline.segments.shell.mode"
+      },
+      {
+        "function": "powerline.segments.common.net.hostname",
+        "priority": 10
+      },
+      {
+        "function": "powerline.segments.common.env.user",
+        "priority": 30,
+        "args": {
+        }
+      },
+      {
+        "function": "powerline.segments.common.env.virtualenv",
+        "priority": 50
+      },
+      {
+        "function": "powerline.segments.shell.cwd",
+        "priority": 10,
+        "args": {
+          "use_path_separator": true,
+          "dir_limit_depth": 4
+        }
+      },
+      {
+        "function": "powerline.segments.shell.jobnum",
+        "priority": 20
+      },
+      {
+        "function": "powerline.segments.common.vcs.branch",
+        "priority": 40,
+        "args": {
+          "status_colors": true
+        }
+      },
+      {
+        "function": "powerline.segments.shell.last_status",
+        "priority": 10
+      }
+    ]
+  }
+}
