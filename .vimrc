@@ -3,12 +3,13 @@
 """"""""""""""
 
 call plug#begin('~/.vim/plugged')
-Plug 'stephenmckinney/vim-solarized-powerline'
+Plug 'vim-airline/vim-airline'
+Plug 'dracula/vim'
+Plug 'rodjek/vim-puppet'
 Plug 'mileszs/ack.vim'
 Plug 'benmills/vimux'
 Plug 'junegunn/gv.vim'
 Plug 'nathanaelkane/vim-indent-guides'
-Plug 'morhetz/gruvbox'
 Plug 'w0rp/ale'
 Plug 'majutsushi/tagbar'
 Plug 'christoomey/vim-tmux-navigator'
@@ -28,6 +29,8 @@ call plug#end()
 "                                   GENERAL                                   "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set undofile " keep file with undo history
+set undodir=$HOME/.vim/undo//
+set directory=$HOME/.vim/swapfiles//
 set laststatus=2 " always show status line
 set cursorline " mark line of the cursor
 set noshowmode " do not show the mode we are working in (vim-airline)
@@ -118,12 +121,26 @@ noremap <silent> ,u
   \ :<C-B>sil <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:noh<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                  FUNCTIONS                                  "
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! RubyHashesAll()
+  :%s/:\([^ ]*\)\(\s*\)=>/\1:/ge
+endfunction
+
+function! RubyHashesSelected()
+  :'<,'>s/:\([^ ]*\)\(\s*\)=>/\1:/ge
+endfunction
+
+nmap <Leader>rhh :call RubyHashesAll()<CR>
+vmap <Leader>rhh :call RubyHashesSelected()<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                 APPEARANCE                                  "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set t_Co=256
-set background=light
+set background=dark
 set termguicolors
-colorscheme solarized
+colorscheme dracula
 
 " specific to one theme
 let g:solarized_visibility="high" "make trailing chars extra visible
@@ -261,7 +278,7 @@ let g:airline#extensions#branch#empty_message = ''
 " do not use vcscommand.vim if available
 let g:airline#extensions#branch#use_vcscommand = 0
 " airline theme
-let g:airline_theme="gruvbox"
+let g:airline_theme="dracula"
 
 " Fugitive Shortcuts
 nmap <silent> <leader>gs :Gstatus<cr>
