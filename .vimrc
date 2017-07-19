@@ -1,9 +1,17 @@
 """"""""""""""
 "  vim-plug  "
 """"""""""""""
+function! BuildCommandT(info)
+  !cd ruby/command-t/ext/command-t && ruby extconf.rb && make
+endfunction
+
+function! BuildYCM(info)
+  !./install.py --all
+endfunction
 
 call plug#begin('~/.vim/plugged')
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'dracula/vim'
 Plug 'rodjek/vim-puppet'
 Plug 'mileszs/ack.vim'
@@ -18,11 +26,16 @@ Plug 'tpope/vim-fugitive'
 Plug 'gregsexton/gitv'
 Plug 'sickill/vim-pasta' " context-aware pasting
 Plug 'airblade/vim-gitgutter'
+Plug 'ternjs/tern_for_vim'
+Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+Plug 'wincent/command-t', { 'do': function('BuildCommandT') }
+Plug 'moll/vim-node', { 'for': 'javascript' }
 " Group dependencies, vim-snippets depends on ultisnips
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 " On-demand loading ToDO: load nerdtree-git-plugin on nerdtree loading
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
   \ | Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
+Plug 'lifepillar/vim-solarized8'
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -138,9 +151,9 @@ vmap <Leader>rhh :call RubyHashesSelected()<CR>
 "                                 APPEARANCE                                  "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set t_Co=256
-set background=dark
+set background=light
 set termguicolors
-colorscheme dracula
+colorscheme solarized8_light_high
 
 " specific to one theme
 let g:solarized_visibility="high" "make trailing chars extra visible
@@ -195,7 +208,7 @@ endif
 """"""""""""""
 "  NERDTree  "
 """"""""""""""
-let NERDTreeWinSize=40
+let NERDTreeWinSize=30
 let g:NERDTreeQuitOnOpen=0
 let NERDTreeShowHidden=1
 
@@ -271,6 +284,12 @@ if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
 let g:airline_powerline_fonts = 1
+" enable/disable tagbar integration >
+let g:airline#extensions#tagbar#enabled = 1
+" Enable the list of buffers
+let g:airline#extensions#tabline#enabled = 1
+" configure the minimum number of buffers needed to show the tabline.
+let g:airline#extensions#tabline#buffer_min_count = 0
 " enable/disable fugitive/lawrencium integration
 let g:airline#extensions#branch#enabled = 1
 " change the text for when no branch is detected
@@ -278,7 +297,7 @@ let g:airline#extensions#branch#empty_message = ''
 " do not use vcscommand.vim if available
 let g:airline#extensions#branch#use_vcscommand = 0
 " airline theme
-let g:airline_theme="dracula"
+let g:airline_theme="solarized"
 
 " Fugitive Shortcuts
 nmap <silent> <leader>gs :Gstatus<cr>
@@ -341,3 +360,9 @@ nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
 nnoremap <silent> <c-\> :TmuxNavigatePrevious<cr>
 
+"""""""""""""""""""
+"  YouCompleteMe  "
+"""""""""""""""""""
+" Remove <tab> and <s-tab> keybindings to allow tab with UltiSnips
+let g:ycm_key_list_select_completion=[]
+let g:ycm_key_list_previous_completion=[]
