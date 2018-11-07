@@ -22,6 +22,11 @@ function! BuildMarkdownComposer(info)
   endif
 endfunction
 
+function! BuildJavascriptLanguageServer(info)
+  !npm install && npm run build
+  !git checkout package-lock.json
+endfunction
+
 function! BuildNcm2Tern(info)
   !npm install
 endfunction
@@ -31,7 +36,7 @@ function! BuildPhpLanguageServer(info)
 endfunction
 
 function! BuildPuppetLanguageServer(info)
-  !cd server && bundle install
+  !bundle install
 endfunction
 
 function! BuildYCM(info)
@@ -39,31 +44,34 @@ function! BuildYCM(info)
 endfunction
 
 call plug#begin('~/.vim/plugged')
-Plug 'andymass/vim-matchup'                                                                           " Extended matching with '%'
+Plug 'aklt/plantuml-syntax'                                                                           " Syntax file for plantuml.
+Plug 'andymass/vim-matchup'                                                                           " Extended matching with '%'.
 Plug 'airblade/vim-gitgutter'                                                                         " Shows a git diff in the sign column. Stage and undo individual hunks.
 Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }                  " Language server protocol client.
-Plug 'Badacadabra/vim-archery'                                                                        " Vim colorscheme inspired by Arch Linux colors
+Plug 'Badacadabra/vim-archery'                                                                        " Vim colorscheme inspired by Arch Linux colors.
 Plug 'benmills/vimux'                                                                                 " Easily interact with tmux from vim.
-Plug 'brooth/far.vim'                                                                                 " Find and replace for vim
-Plug 'christoomey/vim-tmux-navigator'                                                                 " Navigate seamlessly between vim and tmux splits
-Plug 'cquery-project/cquery',{ 'do': function('BuildCquery') }                                        " C/C++ language server
-Plug 'cyansprite/Extract'                                                                             " Extract; Draw forth what really matters
-Plug 'dracula/vim'                                                                                    " Dracula colorscheme for vim
+Plug 'brooth/far.vim'                                                                                 " Find and replace for vim.
+Plug 'christoomey/vim-tmux-navigator'                                                                 " Navigate seamlessly between vim and tmux splits.
+Plug 'cquery-project/cquery',{ 'do': function('BuildCquery') }                                        " C/C++ language server.
+Plug 'cyansprite/Extract'                                                                             " Extract; Draw forth what really matters.
+Plug 'dracula/vim'                                                                                    " Dracula colorscheme for vim.
 Plug 'easymotion/vim-easymotion'                                                                      " Vim motion on speed!.
-Plug 'editorconfig/editorconfig-vim'                                                                  " Follow .editorconfig settings in projects
-Plug 'euclio/vim-markdown-composer', { 'do': function('BuildMarkdownComposer') }                      " Adds asynchronous Markdown preview
+Plug 'editorconfig/editorconfig-vim'                                                                  " Follow .editorconfig settings in projects.
+Plug 'euclio/vim-markdown-composer', { 'do': function('BuildMarkdownComposer') }                      " Adds asynchronous Markdown preview.
 Plug 'godlygeek/tabular'                                                                              " Align text easily.
 Plug 'joshdick/onedark.vim'                                                                           " A dark Vim/Neovim color scheme inspired by Atom's One Dark syntax theme.
-Plug 'jpogran/puppet-vscode', { 'do': function('BuildPuppetLanguageServer') }                         " Puppet Language support for the Language Server Protocol
+Plug 'lingua-pupuli/puppet-editor-services', { 'do': function('BuildPuppetLanguageServer') }          " Puppet Language support for the Language Server Protocol.
 Plug 'jsfaint/gen_tags.vim'                                                                           " Async plugin to ease the use of ctags/gtags.
 Plug 'junegunn/fzf.vim'                                                                               " fuzzy finder for vim.
 Plug 'junegunn/goyo.vim'                                                                              " Distraction-free writing in Vim.
-Plug 'junegunn/gv.vim'                                                                                " Git commit browser
+Plug 'junegunn/gv.vim'                                                                                " Git commit browser.
 Plug 'lifepillar/vim-solarized8'                                                                      " Solarized true color colorscheme for vim.
 Plug 'majutsushi/tagbar'                                                                              " Class outline viewer for vim.
 Plug 'marcdeop/php-language-server', { 'do': function('BuildPhpLanguageServer'), 'branch': 'rename' } " Language server protocol for php.
+Plug 'MicahElliott/Rocannon',                                                                         " Vim for Ansible playbooks.
 Plug 'mileszs/ack.vim'                                                                                " Run your favorite search tool from vim.
 Plug 'morhetz/gruvbox'                                                                                " Gruvbox colorscheme for vim.
+Plug 'mzlogin/vim-markdown-toc'                                                                       " Generate table of contents for Markdown files.
 Plug 'nathanaelkane/vim-indent-guides'                                                                " Visually diosplaying indent levels for vim.
 Plug 'ncm2/ncm2'                                                                                      " Slim, fast hackable completion framework, for neovim.
 Plug 'ncm2/ncm2-bufword'
@@ -75,26 +83,29 @@ Plug 'ncm2/ncm2-tern', { 'do': function('BuildNcm2Tern') }
 Plug 'ncm2/ncm2-tmux'
 Plug 'ncm2/ncm2-ultisnips'
 Plug 'pearofducks/ansible-vim', { 'do': 'cd ./UltiSnips; ./generate.py' }
-Plug 'rakr/vim-one'                                                                                   " Adaptation of one-light and one-dark colorschemes for Vim
+Plug 'rakr/vim-one'                                                                                   " Adaptation of one-light and one-dark colorschemes for Vim.
 Plug 'rodjek/vim-puppet'                                                                              " Make vim more puppet friendly!.
-Plug 'roxma/nvim-yarp'                                                                                " Required by ncm2
+Plug 'roxma/nvim-yarp'                                                                                " Required by ncm2.
+Plug 'roxma/nvim-completion-manager'                                                                  " Async completion framework.
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
   \ | Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
 Plug 'Shougo/echodoc.vim'                                                                             " Show function signature and inline doc.
-Plug 'Shougo/neco-vim'                                                                                " Autocompletion for vimscript
-Plug 'Shougo/neco-syntax'                                                                             " Syntax autocompletion
-Plug 'sickill/vim-pasta'                                                                              " context-aware pasting
+Plug 'Shougo/neco-vim'                                                                                " Autocompletion for vimscript.
+Plug 'Shougo/neco-syntax'                                                                             " Syntax autocompletion.
+Plug 'sickill/vim-pasta'                                                                              " context-aware pasting.
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'                                                   " Snippets for vim.
 Plug 'sjl/gundo.vim'                                                                                  " Visualize your vim undo tree.
 Plug 'sourcegraph/javascript-typescript-langserver', { 'do': 'npm install && npm run build' }         " Language server protocol for javascript.
-Plug 'tpope/vim-fugitive'                                                                             " Git wrapper for vim
+Plug 'tpope/vim-fugitive'                                                                             " Git wrapper for vim.
 Plug 'tpope/vim-repeat'                                                                               " Enable repeating supported plugin maps with `.`
-Plug 'tpope/vim-surround'                                                                             " Quoting/parenthesizing made simple
+Plug 'tpope/vim-surround'                                                                             " Quoting/parenthesizing made simple.
+Plug 'tyru/open-browser.vim'                                                                          " Open URI with your favorite browser from your most favorite editor.
 Plug 'vim-airline/vim-airline'                                                                        " Lean & mean status/tabline for vim.
-Plug 'vim-airline/vim-airline-themes'                                                                 " Themes for vim-airline
-Plug 'vim-pandoc/vim-pandoc'                                                                          " Facilities to integrate Vim with the pandoc document converter
-Plug 'vim-pandoc/vim-pandoc-syntax'                                                                   " Standalone pandoc syntax module
+Plug 'vim-airline/vim-airline-themes'                                                                 " Themes for vim-airline.
+Plug 'vim-pandoc/vim-pandoc'                                                                          " Facilities to integrate Vim with the pandoc document converter.
+Plug 'vim-pandoc/vim-pandoc-syntax'                                                                   " Standalone pandoc syntax module.
 Plug 'vim-utils/vim-man'                                                                              " View man pages in vim. Grep for the man pages.
+Plug 'weirongxu/plantuml-previewer.vim'                                                               " Preview PlantUML.
 Plug 'w0rp/ale'                                                                                       " Asynchronous lint engine.
 call plug#end()
 
@@ -346,7 +357,7 @@ let g:LanguageClient_serverCommands = {
     \ 'cpp': ['~/.vim/plugged/cquery/build/release/bin/cquery', '--log-file=/tmp/cq.log'],
     \ 'javascript': ['node', '~/.vim/plugged/javascript-typescript-langserver/lib/language-server-stdio'],
     \ 'php': ['php', '~/.vim/plugged/php-language-server/bin/php-language-server.php'],
-    \ 'puppet': ['bundle', 'exec', 'ruby', '~/.vim/plugged/puppet-vscode/server/puppet-languageserver', '--stdio', '--debug=/home/deop/puppet-lsp.log', '--timeout=10', '-c'],
+    \ 'puppet': ['bundle', 'exec', 'ruby', '~/.vim/plugged/puppet-editor-services/puppet-languageserver', '--stdio', '--debug=/home/marc.deop/puppet-lsp.log', '--timeout=10', '-c'],
     \ 'ruby': ['docker', 'run', 'mtsmfm/language_server-ruby'],
     \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
     \ }
