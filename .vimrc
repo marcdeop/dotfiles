@@ -70,7 +70,6 @@ Plug 'marcdeop/php-language-server', { 'do': function('BuildPhpLanguageServer'),
 Plug 'MicahElliott/Rocannon',                                                                         " Vim for Ansible playbooks.
 Plug 'mileszs/ack.vim'                                                                                " Run your favorite search tool from vim.
 Plug 'morhetz/gruvbox'                                                                                " Gruvbox colorscheme for vim.
-Plug 'mzlogin/vim-markdown-toc'                                                                       " Generate table of contents for Markdown files.
 Plug 'nathanaelkane/vim-indent-guides'                                                                " Visually diosplaying indent levels for vim.
 Plug 'ncm2/ncm2'                                                                                      " Slim, fast hackable completion framework, for neovim.
 Plug 'ncm2/ncm2-bufword'
@@ -92,6 +91,7 @@ Plug 'Shougo/echodoc.vim'                                                       
 Plug 'Shougo/neco-vim'                                                                                " Autocompletion for vimscript.
 Plug 'Shougo/neco-syntax'                                                                             " Syntax autocompletion.
 Plug 'sickill/vim-pasta'                                                                              " context-aware pasting.
+Plug 'SidOfc/mkdx',                                                                                   " Nice extras for working with markdown documents
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'                                                   " Snippets for vim.
 Plug 'sjl/gundo.vim'                                                                                  " Visualize your vim undo tree.
 Plug 'sourcegraph/javascript-typescript-langserver', { 'do': 'npm install && npm run build' }         " Language server protocol for javascript.
@@ -365,6 +365,52 @@ let g:LanguageClient_serverCommands = {
 "  Markdown Composer  "
 """""""""""""""""""""""
 let g:markdown_composer_autostart = 0
+
+""""""""""
+"  MKDX  "
+""""""""""
+let g:mkdx#settings = {
+      \ 'image_extension_pattern': 'a\?png\|jpe\?g\|gif',
+      \ 'restore_visual':          1,
+      \ 'enter':                   { 'enable': 1, 'malformed': 1, 'o': 1,
+      \                              'shifto': 1, 'shift': 0 },
+      \ 'map':                     { 'prefix': '<leader>', 'enable': 1 },
+      \ 'tokens':                  { 'enter': ['-', '*', '>'],
+      \                              'bold': '**', 'italic': '*', 'strike': '',
+      \                              'list': '-', 'fence': '',
+      \                              'header': '#' },
+      \ 'checkbox':                { 'toggles': [' ', '-', 'x'],
+      \                              'update_tree': 2,
+      \                              'initial_state': ' ' },
+      \ 'toc':                     { 'text': "Table of Contents",
+      \                              'list_token': '*',
+      \                              'update_on_write': 1,
+      \                              'position': 0,
+      \                              'details': {
+      \                                 'enable': 0,
+      \                                 'summary': 'Click to expand {{toc.text}}'
+      \                              }
+      \                            },
+      \ 'table':                   { 'divider': '|',
+      \                              'header_divider': '-',
+      \                              'align': {
+      \                                 'left':    [],
+      \                                 'center':  [],
+      \                                 'right':   [],
+      \                                 'default': 'center'
+      \                              }
+      \                            },
+      \ 'links':                   { 'external': {
+      \                                 'enable': 0, 'timeout': 3, 'host': '', 'relative': 1,
+      \                                 'user_agent':  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/9001.0.0000.000 vim-mkdx/1.8.1'
+      \                              },
+      \                              'fragment': {
+      \                                 'jumplist': 1,
+      \                                 'complete': 1
+      \                              }
+      \                            },
+      \ 'highlight':               { 'enable': 0 },
+      \ 'auto_update':             { 'enable': 1 }}
 
 """"""""""""""
 "  NERDTree  "
