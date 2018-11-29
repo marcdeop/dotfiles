@@ -23,8 +23,7 @@ function! BuildMarkdownComposer(info)
 endfunction
 
 function! BuildJavascriptLanguageServer(info)
-  !npm install && npm run build
-  !git checkout package-lock.json
+  !npm install && npm run build && git checkout -- package-lock.json
 endfunction
 
 function! BuildNcm2Tern(info)
