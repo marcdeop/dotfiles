@@ -230,11 +230,11 @@ colorscheme gruvbox
 let g:solarized_visibility="high" "make trailing chars extra visible
 
 " specific to gruvbox theme
-let g:gruvbox_invert_signs = 1
-let g:gruvbox_italic = 1
-let g:gruvbox_contrast_dark = "medium"
-let g:gruvbox_contrast_light = "medium"
-let g:gruvbox_improved_strings = 1
+let g:gruvbox_invert_signs      = 1
+let g:gruvbox_italic            = 1
+let g:gruvbox_contrast_dark     = "medium"
+let g:gruvbox_contrast_light    = "medium"
+let g:gruvbox_improved_strings  = 1
 let g:gruvbox_improved_warnings = 1
 
 set listchars=tab:·-,trail:· " mark 'misplaced' tab characters
@@ -286,14 +286,14 @@ highlight clear ALEWarningSign
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tagbar#enabled = 1           " enable/disable tagbar integration >
-let g:airline#extensions#tabline#enabled = 1          " Enable the list of buffers
-let g:airline#extensions#tabline#buffer_min_count = 0 " configure the minimum number of buffers needed to show the tabline.
-let g:airline#extensions#branch#enabled = 1           " enable/disable fugitive/lawrencium integration
-let g:airline#extensions#branch#empty_message = ''    " change the text for when no branch is detected
-let g:airline#extensions#branch#use_vcscommand = 0    " do not use vcscommand.vim if available
-let g:airline_theme='one'                             " airline theme
+let g:airline_theme                               = 'gruvbox' " airline theme
+let g:airline_powerline_fonts                     = 1
+let g:airline#extensions#tagbar#enabled           = 1     " enable/disable tagbar integration >
+let g:airline#extensions#tabline#enabled          = 1     " Enable the list of buffers
+let g:airline#extensions#tabline#buffer_min_count = 0     " configure the minimum number of buffers needed to show the tabline.
+let g:airline#extensions#branch#enabled           = 1     " enable/disable fugitive/lawrencium integration
+let g:airline#extensions#branch#empty_message     = ''    " change the text for when no branch is detected
+let g:airline#extensions#branch#use_vcscommand    = 0     " do not use vcscommand.vim if available
 
 """"""""""""""""
 "  EasyMotion  "
@@ -334,12 +334,14 @@ nmap <silent><leader>gb :Gblame<cr>
 """""""""
 nmap <silent><leader>t :Files<cr>
 nmap <silent><leader>a :Ag<cr>
+nmap <silent><leader>b :Buffers<cr>
 
 """"""""""""""""""""
 "  LanguageClient  "
 """"""""""""""""""""
 " used on CTRL-X CTRL-U on insert mode
 set completefunc=LanguageClient#complete
+
 " on formatting
 set formatexpr=LanguageClient_textDocument_rangeFormatting()
 
@@ -348,17 +350,41 @@ nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
 nnoremap <silent> gr :call LanguageClient_textDocument_references()<CR>
 nnoremap <silent> gs :call LanguageClient_textDocument_documentSymbol()<CR>
 nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
-let g:LanguageClient_autoStart = 1 " Automatically start language servers.
-let g:LanguageClient_loadSettings = 1 " Use an absolute configuration path if you want system-wide settings 
-let g:LanguageClient_settingsPath = expand('~/.vim/cquery_settings.json')
+
+let g:LanguageClient_autoStart      = 1 " Automatically start language servers.
+let g:LanguageClient_loadSettings   = 1 " Use an absolute configuration path if you want system-wide settings
+let g:LanguageClient_settingsPath   = expand('~/.vim/cquery_settings.json')
 let g:LanguageClient_serverCommands = {
-    \ 'c': ['~/.vim/plugged/cquery/build/release/bin/cquery', '--log-file=/tmp/cq.log'],
-    \ 'cpp': ['~/.vim/plugged/cquery/build/release/bin/cquery', '--log-file=/tmp/cq.log'],
-    \ 'javascript': ['node', '~/.vim/plugged/javascript-typescript-langserver/lib/language-server-stdio'],
-    \ 'php': ['php', '~/.vim/plugged/php-language-server/bin/php-language-server.php'],
-    \ 'puppet': ['bundle', 'exec', 'ruby', '~/.vim/plugged/puppet-editor-services/puppet-languageserver', '--stdio', '--debug=/home/marc.deop/puppet-lsp.log', '--timeout=10', '-c'],
-    \ 'ruby': ['docker', 'run', 'mtsmfm/language_server-ruby'],
-    \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+    \ 'c': [
+      \ '~/.vim/plugged/cquery/build/release/bin/cquery',
+      \ '--log-file=/tmp/cq.log'],
+    \ 'cpp': [
+      \ '~/.vim/plugged/cquery/build/release/bin/cquery',
+      \ '--log-file=/tmp/cq.log'],
+    \ 'javascript': [
+      \ 'node',
+      \ '~/.vim/plugged/javascript-typescript-langserver/lib/language-server-stdio'],
+    \ 'php': [
+      \ 'php',
+      \ '~/.vim/plugged/php-language-server/bin/php-language-server.php'],
+    \ 'puppet': [
+      \ 'bundle',
+      \ 'exec',
+      \ 'ruby',
+      \ '~/.vim/plugged/puppet-editor-services/puppet-languageserver',
+      \ '--stdio',
+      \ '--debug=/home/marc.deop/puppet-lsp.log',
+      \ '--timeout=10',
+      \ '-c'],
+    \ 'ruby': [
+      \ 'docker',
+      \ 'run',
+      \ 'mtsmfm/language_server-ruby'],
+    \ 'rust': [
+      \ 'rustup',
+      \ 'run',
+      \ 'nightly',
+      \ 'rls'],
     \ }
 
 """""""""""""""""""""""
