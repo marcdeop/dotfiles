@@ -84,7 +84,6 @@ Plug 'pearofducks/ansible-vim', { 'do': 'cd ./UltiSnips; ./generate.py' }
 Plug 'rakr/vim-one'                                                                                   " Adaptation of one-light and one-dark colorschemes for Vim.
 Plug 'rodjek/vim-puppet'                                                                              " Make vim more puppet friendly!.
 Plug 'roxma/nvim-yarp'                                                                                " Required by ncm2.
-Plug 'roxma/nvim-completion-manager'                                                                  " Async completion framework.
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
   \ | Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
 Plug 'Shougo/echodoc.vim'                                                                             " Show function signature and inline doc.
