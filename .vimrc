@@ -1,6 +1,11 @@
 """"""""""""""
 "  vim-plug  "
 """"""""""""""
+function! BuildBashLanguageServer(info)
+  !PATH="/usr/lib/node_modules/yarn/bin/:$PATH" yarn install
+  !PATH="/usr/lib/node_modules/yarn/bin/:$PATH" yarn run compile
+endfunction
+
 function! BuildCquery(info)
   !git submodule update --init
   !mkdir -p build
@@ -66,6 +71,7 @@ Plug 'junegunn/fzf.vim'                                                         
 Plug 'junegunn/goyo.vim'                                                                              " Distraction-free writing in Vim.
 Plug 'junegunn/gv.vim'                                                                                " Git commit browser.
 Plug 'lifepillar/vim-solarized8'                                                                      " Solarized true color colorscheme for vim.
+Plug 'mads-hartmann/bash-language-server', { 'do': function('BuildBashLanguageServer') }              " A language server for Bash.
 Plug 'majutsushi/tagbar'                                                                              " Class outline viewer for vim.
 Plug 'marcdeop/php-language-server', { 'do': function('BuildPhpLanguageServer'), 'branch': 'rename' } " Language server protocol for php.
 Plug 'MicahElliott/Rocannon',                                                                         " Vim for Ansible playbooks.
@@ -355,6 +361,9 @@ let g:LanguageClient_autoStart      = 1 " Automatically start language servers.
 let g:LanguageClient_loadSettings   = 1 " Use an absolute configuration path if you want system-wide settings
 let g:LanguageClient_settingsPath   = expand('~/.vim/cquery_settings.json')
 let g:LanguageClient_serverCommands = {
+    \ 'sh': [
+      \ '~/.vim/plugged/bash-language-server/server/bin/main.js',
+      \ 'start'],
     \ 'c': [
       \ '~/.vim/plugged/cquery/build/release/bin/cquery',
       \ '--log-file=/tmp/cq.log'],
