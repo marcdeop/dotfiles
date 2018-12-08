@@ -57,6 +57,7 @@ Plug 'dracula/vim'                                                              
 Plug 'easymotion/vim-easymotion'                                                                      " Vim motion on speed!.
 Plug 'editorconfig/editorconfig-vim'                                                                  " Follow .editorconfig settings in projects.
 Plug 'euclio/vim-markdown-composer', { 'do': function('BuildMarkdownComposer') }                      " Adds asynchronous Markdown preview.
+Plug 'fenetikm/falcon'                                                                                " A colour scheme for terminals, Vim and friends.
 Plug 'godlygeek/tabular'                                                                              " Align text easily.
 Plug 'joshdick/onedark.vim'                                                                           " A dark Vim/Neovim color scheme inspired by Atom's One Dark syntax theme.
 Plug 'lingua-pupuli/puppet-editor-services', { 'do': function('BuildPuppetLanguageServer') }          " Puppet Language support for the Language Server Protocol.
@@ -223,7 +224,7 @@ vmap <Leader>rhh :call RubyHashesSelected()<CR>
 set t_Co=256
 set background=dark
 set termguicolors
-colorscheme gruvbox
+colorscheme falcon
 
 " specific to one theme
 let g:solarized_visibility="high" "make trailing chars extra visible
