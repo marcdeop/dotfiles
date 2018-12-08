@@ -43,6 +43,10 @@ function! BuildPuppetLanguageServer(info)
   !bundle install
 endfunction
 
+function! BuildXMLLanguageServer(info)
+  !./mvnw clean verify
+endfunction
+
 function! BuildYCM(info)
   !./install.py --all
 endfunction
@@ -50,6 +54,7 @@ endfunction
 call plug#begin('~/.vim/plugged')
 Plug 'aklt/plantuml-syntax'                                                                           " Syntax file for plantuml.
 Plug 'andymass/vim-matchup'                                                                           " Extended matching with '%'.
+Plug 'angelozerr/lsp4xml', { 'do': function('BuildXMLLanguageServer') }                               " XML Language Server.
 Plug 'airblade/vim-gitgutter'                                                                         " Shows a git diff in the sign column. Stage and undo individual hunks.
 Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }                  " Language server protocol client.
 Plug 'Badacadabra/vim-archery'                                                                        " Vim colorscheme inspired by Arch Linux colors.
@@ -394,6 +399,10 @@ let g:LanguageClient_serverCommands = {
       \ 'run',
       \ 'nightly',
       \ 'rls'],
+    \ 'xml': [
+      \ 'java',
+      \ '-jar',
+      \ '~/.vim/plugged/lsp4xml/org.eclipse.lsp4xml/target/org.eclipse.lsp4xml-all.jar'],
     \ }
 
 """""""""""""""""""""""
