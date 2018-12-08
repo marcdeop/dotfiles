@@ -60,6 +60,7 @@ Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.s
 Plug 'Badacadabra/vim-archery'                                                                        " Vim colorscheme inspired by Arch Linux colors.
 Plug 'benmills/vimux'                                                                                 " Easily interact with tmux from vim.
 Plug 'brooth/far.vim'                                                                                 " Find and replace for vim.
+Plug 'chriskempson/base16-vim'                                                                        " Base16 for Vim.
 Plug 'christoomey/vim-tmux-navigator'                                                                 " Navigate seamlessly between vim and tmux splits.
 Plug 'cquery-project/cquery',{ 'do': function('BuildCquery') }                                        " C/C++ language server.
 Plug 'cyansprite/Extract'                                                                             " Extract; Draw forth what really matters.
