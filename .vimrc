@@ -252,10 +252,8 @@ let g:gruvbox_improved_warnings = 1
 
 set listchars=tab:·-,trail:· " mark 'misplaced' tab characters
 set list
-
-
-set rnu " Enable reversenumbers
-set nu  " Enable line numbering
+set rnu                      " Enable reversenumbers
+set nu                       " Enable line numbering
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                 INDENTATION                                 "
@@ -563,6 +561,9 @@ map <Leader>vq :VimuxCloseRunner<CR>                                     " Close
 map <Leader>vx :VimuxInterruptRunner<CR>                                 " Interrupt any command running in the runner pane
 map <Leader>vz :call VimuxZoomRunner()<CR>                               " Zoom the runner pane (use <bind-key> z to restore runner pane)
 
+""""""""""
+"  Ncm2  "
+""""""""""
 " enable ncm2 for all buffer
 autocmd BufEnter * call ncm2#enable_for_buffer()
 
