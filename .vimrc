@@ -411,6 +411,35 @@ let g:LanguageClient_serverCommands = {
       \ '~/tmp/yaml-language-server/out/server/src/server.js',
       \ '--stdio']
     \ }
+let g:LanguageClient_diagnosticsDisplay = {
+      \ 1: {
+        \ "name": "Error",
+        \ "texthl": "ALEError",
+        \ "signText": "✖",
+        \ "signTexthl": "ALEErrorSign",
+        \ "virtualTexthl": "Error",
+      \ },
+      \ 2: {
+        \ "name": "Warning",
+        \ "texthl": "ALEWarning",
+        \ "signText": "⚠",
+        \ "signTexthl": "ALEWarningSign",
+        \ "virtualTexthl": "Todo",
+      \ },
+      \ 3: {
+        \ "name": "Information",
+        \ "texthl": "ALEInfo",
+        \ "signText": "ℹ",
+        \ "signTexthl": "ALEInfoSign",
+        \ "virtualTexthl": "Todo",
+      \ },
+      \ 4: {
+        \ "name": "Hint",
+        \ "texthl": "ALEInfo",
+        \ "signText": "➤",
+        \ "signTexthl": "ALEInfoSign",
+        \ "virtualTexthl": "Todo",
+      \ },
     \ }
 
 """""""""""""""""""""""
