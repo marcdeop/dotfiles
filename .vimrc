@@ -70,6 +70,7 @@ Plug 'editorconfig/editorconfig-vim'                                            
 Plug 'euclio/vim-markdown-composer', { 'do': function('BuildMarkdownComposer') }                      " Adds asynchronous Markdown preview.
 Plug 'fenetikm/falcon'                                                                                " A colour scheme for terminals, Vim and friends.
 Plug 'godlygeek/tabular'                                                                              " Align text easily.
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}                              " Markdown preview plugin for neovim.
 Plug 'joshdick/onedark.vim'                                                                           " A dark Vim/Neovim color scheme inspired by Atom's One Dark syntax theme.
 Plug 'lingua-pupuli/puppet-editor-services', { 'do': function('BuildPuppetLanguageServer') }          " Puppet Language support for the Language Server Protocol.
 Plug 'jsfaint/gen_tags.vim'                                                                           " Async plugin to ease the use of ctags/gtags.
@@ -410,6 +411,25 @@ let g:LanguageClient_serverCommands = {
 "  Markdown Composer  "
 """""""""""""""""""""""
 let g:markdown_composer_autostart = 0
+
+""""""""""""""""""""""
+"  Markdown Preview  "
+""""""""""""""""""""""
+let g:mkdp_auto_start = 0
+let g:mkdp_auto_close = 1
+let g:mkdp_refresh_slow = 0
+let g:mkdp_command_for_global = 0
+let g:mkdp_open_to_the_world = 0
+let g:mkdp_browser = 'falkon'
+let g:mkdp_preview_options = {
+    \ 'mkit': {},
+    \ 'katex': {},
+    \ 'uml': {},
+    \ 'maid': {}
+    \ }
+let g:mkdp_markdown_css = ''
+let g:mkdp_highlight_css = ''
+let g:mkdp_port = ''
 
 """"""""""
 "  MKDX  "
