@@ -366,6 +366,7 @@ nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 
 let g:LanguageClient_autoStart      = 1 " Automatically start language servers.
 let g:LanguageClient_loadSettings   = 1 " Use an absolute configuration path if you want system-wide settings
+let g:LanguageClient_useVirtualText = 0 " Disable virtual text diagnostics
 let g:LanguageClient_settingsPath   = expand('~/.vim/cquery_settings.json')
 let g:LanguageClient_serverCommands = {
     \ 'sh': [
