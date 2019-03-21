@@ -236,7 +236,7 @@ vmap <Leader>rhh :call RubyHashesSelected()<CR>
 set t_Co=256
 set background=dark
 set termguicolors
-colorscheme falcon
+colorscheme gruvbox
 
 " specific to one theme
 let g:solarized_visibility="high" "make trailing chars extra visible
