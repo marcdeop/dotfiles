@@ -406,6 +406,11 @@ let g:LanguageClient_serverCommands = {
       \ 'java',
       \ '-jar',
       \ '~/.vim/plugged/lsp4xml/org.eclipse.lsp4xml/target/org.eclipse.lsp4xml-all.jar'],
+    \ 'yaml.ansible': [
+      \ 'node',
+      \ '~/tmp/yaml-language-server/out/server/src/server.js',
+      \ '--stdio']
+    \ }
     \ }
 
 """""""""""""""""""""""
