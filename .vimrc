@@ -122,7 +122,7 @@ Plug 'vim-pandoc/vim-pandoc'                                                    
 Plug 'vim-pandoc/vim-pandoc-syntax'                                                                   " Standalone pandoc syntax module.
 Plug 'vim-utils/vim-man'                                                                              " View man pages in vim. Grep for the man pages.
 Plug 'weirongxu/plantuml-previewer.vim'                                                               " Preview PlantUML.
-"Plug 'w0rp/ale'                                                                                       " Asynchronous lint engine.
+Plug 'w0rp/ale'                                                                                       " Asynchronous lint engine.
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
