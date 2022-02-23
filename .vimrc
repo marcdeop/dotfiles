@@ -95,12 +95,14 @@ Plug 'ncm2/ncm2-racer'
 Plug 'ncm2/ncm2-tern', { 'do': function('BuildNcm2Tern') }
 Plug 'ncm2/ncm2-tmux'
 Plug 'ncm2/ncm2-ultisnips'
+Plug 'npmiller/vreeze'                                                                                " Breeze inspired vim colorscheme
 Plug 'pearofducks/ansible-vim', { 'do': 'cd ./UltiSnips; ./generate.py' }
 Plug 'rakr/vim-one'                                                                                   " Adaptation of one-light and one-dark colorschemes for Vim.
 Plug 'rodjek/vim-puppet'                                                                              " Make vim more puppet friendly!.
 Plug 'roxma/nvim-yarp'                                                                                " Required by ncm2.
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
   \ | Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
+Plug 'shumphrey/fugitive-gitlab.vim'                                                                  " Allows use of vim-fugitive with gitlab repositories
 Plug 'Shougo/echodoc.vim'                                                                             " Show function signature and inline doc.
 Plug 'Shougo/neco-vim'                                                                                " Autocompletion for vimscript.
 Plug 'Shougo/neco-syntax'                                                                             " Syntax autocompletion.
@@ -109,6 +111,7 @@ Plug 'SidOfc/mkdx',                                                             
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'                                                   " Snippets for vim.
 Plug 'sjl/gundo.vim'                                                                                  " Visualize your vim undo tree.
 Plug 'sourcegraph/javascript-typescript-langserver', { 'do': 'npm install && npm run build' }         " Language server protocol for javascript.
+Plug 'stephpy/vim-yaml'                                                                               " Override vim syntax for yaml files
 Plug 'tpope/vim-fugitive'                                                                             " Git wrapper for vim.
 Plug 'tpope/vim-repeat'                                                                               " Enable repeating supported plugin maps with `.`
 Plug 'tpope/vim-surround'                                                                             " Quoting/parenthesizing made simple.
