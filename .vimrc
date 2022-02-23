@@ -80,7 +80,7 @@ Plug 'junegunn/goyo.vim'                                                        
 Plug 'junegunn/gv.vim'                                                                                " Git commit browser.
 Plug 'lifepillar/vim-solarized8'                                                                      " Solarized true color colorscheme for vim.
 Plug 'mads-hartmann/bash-language-server', { 'do': function('BuildBashLanguageServer') }              " A language server for Bash.
-Plug 'majutsushi/tagbar'                                                                              " Class outline viewer for vim.
+Plug 'majutsushi/tagbar'                                                                              " Vim plugin that displays tags in a window, ordered by scope
 Plug 'marcdeop/php-language-server', { 'do': function('BuildPhpLanguageServer'), 'branch': 'rename' } " Language server protocol for php.
 Plug 'MicahElliott/Rocannon',                                                                         " Vim for Ansible playbooks.
 Plug 'mileszs/ack.vim'                                                                                " Run your favorite search tool from vim.
