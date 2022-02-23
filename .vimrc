@@ -71,6 +71,7 @@ Plug 'editorconfig/editorconfig-vim'                                            
 Plug 'euclio/vim-markdown-composer', { 'do': function('BuildMarkdownComposer') }                      " Adds asynchronous Markdown preview.
 Plug 'fenetikm/falcon'                                                                                " A colour scheme for terminals, Vim and friends.
 Plug 'godlygeek/tabular'                                                                              " Align text easily.
+Plug 'hashivim/vim-terraform'                                                                         " Terraform filetype and highlight
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}                              " Markdown preview plugin for neovim.
 Plug 'joshdick/onedark.vim'                                                                           " A dark Vim/Neovim color scheme inspired by Atom's One Dark syntax theme.
 Plug 'puppetlabs/puppet-editor-services', { 'do': function('BuildPuppetLanguageServer') }             " Puppet Language support for the Language Server Protocol.
