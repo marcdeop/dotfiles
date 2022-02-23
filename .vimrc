@@ -129,6 +129,7 @@ call plug#end()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                   GENERAL                                   "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set shortmess+=I                  " Do not show intro message
 let mapleader = ','
 set undodir=$HOME/.vim/undo//
 set directory=$HOME/.vim/swapfiles//
@@ -205,6 +206,8 @@ nnoremap <C-y> 3<C-y>
 
 " Specific filetype options
 au BufRead,BufNewFile *.pp set filetype=puppet
+au BufRead,BufNewFile *.tf set filetype=terraform
+au BufRead,BufNewFile *.yaml,*.yml set filetype=yaml
 au FileType puppet setlocal isk+=:
 au FileType puppet nnoremap <c-]> :exe "tag " . substitute(expand("<cword>"), "^::", "", "")<CR>
 au FileType puppet nnoremap <c-w><c-]> :tab split<CR>:exe "tag " . substitute(expand("<cword>"), "^::", "", "")<CR>
@@ -250,8 +253,8 @@ let g:solarized_visibility="high" "make trailing chars extra visible
 " specific to gruvbox theme
 let g:gruvbox_invert_signs      = 1
 let g:gruvbox_italic            = 1
-let g:gruvbox_contrast_dark     = "medium"
-let g:gruvbox_contrast_light    = "medium"
+let g:gruvbox_contrast_dark     = "hard"
+let g:gruvbox_contrast_light    = "hard"
 let g:gruvbox_improved_strings  = 1
 let g:gruvbox_improved_warnings = 1
 
@@ -310,6 +313,7 @@ let g:airline#extensions#tabline#buffer_min_count = 0     " configure the minimu
 let g:airline#extensions#branch#enabled           = 1     " enable/disable fugitive/lawrencium integration
 let g:airline#extensions#branch#empty_message     = ''    " change the text for when no branch is detected
 let g:airline#extensions#branch#use_vcscommand    = 0     " do not use vcscommand.vim if available
+let g:airline_exclude_filetypes                   = ['nerdtree']
 
 """"""""""""""""
 "  EasyMotion  "
@@ -367,10 +371,9 @@ nnoremap <silent> gr :call LanguageClient_textDocument_references()<CR>
 nnoremap <silent> gs :call LanguageClient_textDocument_documentSymbol()<CR>
 nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 
-let g:LanguageClient_autoStart      = 1 " Automatically start language servers.
-let g:LanguageClient_loadSettings   = 1 " Use an absolute configuration path if you want system-wide settings
-let g:LanguageClient_useVirtualText = 0 " Disable virtual text diagnostics
-let g:LanguageClient_settingsPath   = expand('~/.vim/cquery_settings.json')
+let g:LanguageClient_autoStart      = 1    " Automatically start language servers.
+let g:LanguageClient_loadSettings   = 1    " Use an absolute configuration path if you want system-wide settings
+let g:LanguageClient_useVirtualText = "No" " Disable virtual text diagnostics
 let g:LanguageClient_serverCommands = {
     \ 'sh': [
       \ '~/.vim/plugged/bash-language-server/server/bin/main.js',
@@ -388,14 +391,15 @@ let g:LanguageClient_serverCommands = {
       \ 'php',
       \ '~/.vim/plugged/php-language-server/bin/php-language-server.php'],
     \ 'puppet': [
-      \ 'bundle',
-      \ 'exec',
       \ 'ruby',
       \ '~/.vim/plugged/puppet-editor-services/puppet-languageserver',
       \ '--stdio',
-      \ '--debug=/home/marc.deop/puppet-lsp.log',
       \ '--timeout=10',
+      \ '--debug=/home/marc.deop/puppet-debug.log',
       \ '-c'],
+    \ 'python': [
+      \ '~/.local/bin/pyls',
+      \ '--log-file=/tmp/pyls.log'],
     \ 'ruby': [
       \ 'docker',
       \ 'run',
@@ -405,6 +409,8 @@ let g:LanguageClient_serverCommands = {
       \ 'run',
       \ 'nightly',
       \ 'rls'],
+    \ 'terraform': [
+      \ 'terraform-lsp'],
     \ 'xml': [
       \ 'java',
       \ '-jar',
@@ -488,7 +494,7 @@ let g:mkdx#settings = {
       \ 'toc':                     { 'text': "Table of Contents",
       \                              'list_token': '*',
       \                              'update_on_write': 1,
-      \                              'position': 0,
+      \                              'position': 2,
       \                              'details': {
       \                                 'enable': 0,
       \                                 'summary': 'Click to expand {{toc.text}}'
@@ -504,7 +510,7 @@ let g:mkdx#settings = {
       \                              }
       \                            },
       \ 'links':                   { 'external': {
-      \                                 'enable': 0, 'timeout': 3, 'host': '', 'relative': 1,
+      \                                 'enable': 1, 'timeout': 3, 'host': '', 'relative': 1,
       \                                 'user_agent':  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/9001.0.0000.000 vim-mkdx/1.8.1'
       \                              },
       \                              'fragment': {
@@ -512,7 +518,7 @@ let g:mkdx#settings = {
       \                                 'complete': 1
       \                              }
       \                            },
-      \ 'highlight':               { 'enable': 0 },
+      \ 'highlight':               { 'enable': 1 },
       \ 'auto_update':             { 'enable': 1 }}
 
 """"""""""""""
@@ -521,6 +527,7 @@ let g:mkdx#settings = {
 let NERDTreeWinSize = 30
 let g:NERDTreeQuitOnOpen = 0
 let NERDTreeShowHidden = 1
+let NERDTreeMinimalUI = 1
 
 """"""""""""
 "  Tagbar  "
@@ -573,7 +580,7 @@ map <Leader>vz :call VimuxZoomRunner()<CR>                               " Zoom 
 autocmd BufEnter * call ncm2#enable_for_buffer()
 
 " note that must keep noinsert in completeopt, the others is optional
-set completeopt=noinsert,menuone,noselect
+set completeopt=noinsert,menuone,noselect,preview
 inoremap <silent> <expr> <CR> ncm2_ultisnips#expand_or("\<CR>", 'n')
-inoremap <Nul> <C-x><C-o> 
+inoremap <Nul> <C-x><C-o>
 
