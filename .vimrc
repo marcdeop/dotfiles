@@ -41,6 +41,7 @@ endfunction
 
 function! BuildPuppetLanguageServer(info)
   !bundle install
+  !bundle exec rake gem_revendor
 endfunction
 
 function! BuildXMLLanguageServer(info)
@@ -72,7 +73,7 @@ Plug 'fenetikm/falcon'                                                          
 Plug 'godlygeek/tabular'                                                                              " Align text easily.
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}                              " Markdown preview plugin for neovim.
 Plug 'joshdick/onedark.vim'                                                                           " A dark Vim/Neovim color scheme inspired by Atom's One Dark syntax theme.
-Plug 'lingua-pupuli/puppet-editor-services', { 'do': function('BuildPuppetLanguageServer') }          " Puppet Language support for the Language Server Protocol.
+Plug 'puppetlabs/puppet-editor-services', { 'do': function('BuildPuppetLanguageServer') }             " Puppet Language support for the Language Server Protocol.
 Plug 'jsfaint/gen_tags.vim'                                                                           " Async plugin to ease the use of ctags/gtags.
 Plug 'junegunn/fzf.vim'                                                                               " fuzzy finder for vim.
 Plug 'junegunn/goyo.vim'                                                                              " Distraction-free writing in Vim.
