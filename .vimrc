@@ -31,10 +31,6 @@ function! BuildJavascriptLanguageServer(info)
   !npm install && npm run build && git checkout -- package-lock.json
 endfunction
 
-function! BuildNcm2Tern(info)
-  !npm install
-endfunction
-
 function! BuildPhpLanguageServer(info)
   !composer install && composer run-script parse-stubs
 endfunction
@@ -57,7 +53,6 @@ Plug 'aklt/plantuml-syntax'                                                     
 Plug 'andymass/vim-matchup'                                                                           " Extended matching with '%'.
 Plug 'angelozerr/lsp4xml', { 'do': function('BuildXMLLanguageServer') }                               " XML Language Server.
 Plug 'airblade/vim-gitgutter'                                                                         " Shows a git diff in the sign column. Stage and undo individual hunks.
-Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }                  " Language server protocol client.
 Plug 'Badacadabra/vim-archery'                                                                        " Vim colorscheme inspired by Arch Linux colors.
 Plug 'benmills/vimux'                                                                                 " Easily interact with tmux from vim.
 Plug 'brooth/far.vim'                                                                                 " Find and replace for vim.
@@ -87,20 +82,11 @@ Plug 'MicahElliott/Rocannon',                                                   
 Plug 'mileszs/ack.vim'                                                                                " Run your favorite search tool from vim.
 Plug 'morhetz/gruvbox'                                                                                " Gruvbox colorscheme for vim.
 Plug 'nathanaelkane/vim-indent-guides'                                                                " Visually diosplaying indent levels for vim.
-Plug 'ncm2/ncm2'                                                                                      " Slim, fast hackable completion framework, for neovim.
-Plug 'ncm2/ncm2-bufword'
-Plug 'ncm2/ncm2-jedi'
-Plug 'ncm2/ncm2-markdown-subscope'
-Plug 'ncm2/ncm2-path'
-Plug 'ncm2/ncm2-racer'
-Plug 'ncm2/ncm2-tern', { 'do': function('BuildNcm2Tern') }
-Plug 'ncm2/ncm2-tmux'
-Plug 'ncm2/ncm2-ultisnips'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}                                                       " Make your Vim/Neovim as smart as VSCode.
 Plug 'npmiller/vreeze'                                                                                " Breeze inspired vim colorscheme
 Plug 'pearofducks/ansible-vim', { 'do': 'cd ./UltiSnips; ./generate.py' }
 Plug 'rakr/vim-one'                                                                                   " Adaptation of one-light and one-dark colorschemes for Vim.
 Plug 'rodjek/vim-puppet'                                                                              " Make vim more puppet friendly!.
-Plug 'roxma/nvim-yarp'                                                                                " Required by ncm2.
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
   \ | Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
 Plug 'shumphrey/fugitive-gitlab.vim'                                                                  " Allows use of vim-fugitive with gitlab repositories
@@ -130,6 +116,7 @@ call plug#end()
 "                                   GENERAL                                   "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set shortmess+=I                  " Do not show intro message
+set shortmess+=c                  " Don't pass messages to |ins-completion-menu|
 let mapleader = ','
 set undodir=$HOME/.vim/undo//
 set directory=$HOME/.vim/swapfiles//
@@ -152,6 +139,8 @@ set hidden                        " Required for operations modifying multiple b
 set ttyfast                       " Faster redrawing
 set diffopt+=vertical             " Open diff in vertical split
 set rtp^=/usr/share/vim/vimfiles/ " Make sure we read vimfiles ( in case we use nvim)
+set cmdheight=2                   " Give more space for displaying messages
+set updatetime=300                " Reduce to 300 because default is 4000!
 
 " handling proper lenght of lines
 set wrap
@@ -326,6 +315,154 @@ map <Leader>k <Plug>(easymotion-k)
 map <Leader>l <Plug>(easymotion-lineforward)
 map <Leader>h <Plug>(easymotion-linebackward)
 
+"""""""""
+"  CoC  "
+"""""""""
+let g:coc_global_extensions = [
+  \ 'coc-clangd',
+  \ 'coc-cmake',
+  \ 'coc-css',
+  \ 'coc-docker',
+  \ 'coc-emoji',
+  \ 'coc-git',
+  \ 'coc-go',
+  \ 'coc-html',
+  \ 'coc-java',
+  \ 'coc-json',
+  \ 'coc-lists',
+  \ 'coc-markdownlint',
+  \ 'coc-phpls',
+  \ 'coc-pyright',
+  \ 'coc-rls',
+  \ 'coc-sh',
+  \ 'coc-snippets',
+  \ 'coc-tag',
+  \ 'coc-tsserver',
+  \ 'coc-ultisnips',
+  \ 'coc-yaml',
+  \ 'coc-yank'
+  \]
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Formatting selected code.
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder.
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap keys for applying codeAction to the current buffer.
+nmap <leader>ac  <Plug>(coc-codeaction)
+
+" Apply AutoFix to problem on the current line.
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Run the Code Lens action on the current line.
+nmap <leader>cl  <Plug>(coc-codelens-action)
+
+" Map function and class text objects
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
+
+" Remap <C-f> and <C-b> for scroll float windows/popups.
+if has('nvim-0.4.0') || has('patch-8.2.0750')
+  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+endif
+
+" Use CTRL-S for selections ranges.
+" Requires 'textDocument/selectionRange' support of language server.
+nmap <silent> <C-s> <Plug>(coc-range-select)
+xmap <silent> <C-s> <Plug>(coc-range-select)
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocActionAsync('format')
+
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
+
+" Add (Neo)Vim's native statusline support.
+" NOTE: Please see `:h coc-status` for integrations with external plugins that
+" provide custom statusline: lightline.vim, vim-airline.
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+" Mappings for CoCList
+" Show all diagnostics.
+nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+
+" Manage extensions
+nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+
+" Show commands.
+nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+
+" Find symbol of current document.
+nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+
+" Search workspace symbols.
+nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+
+" Do default action for next item.
+nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
+
+" Do default action for previous item.
+nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+
+" Resume latest coc list.
+nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+
 """"""""""""""""""
 "  EditorConfig  "
 """"""""""""""""""
@@ -355,101 +492,6 @@ nmap <silent><leader>gb :Gblame<cr>
 nmap <silent><leader>t :Files<cr>
 nmap <silent><leader>a :Ag<cr>
 nmap <silent><leader>b :Buffers<cr>
-
-""""""""""""""""""""
-"  LanguageClient  "
-""""""""""""""""""""
-" used on CTRL-X CTRL-U on insert mode
-set completefunc=LanguageClient#complete
-
-" on formatting
-set formatexpr=LanguageClient_textDocument_rangeFormatting()
-
-nnoremap <silent> gh :call LanguageClient_textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-nnoremap <silent> gr :call LanguageClient_textDocument_references()<CR>
-nnoremap <silent> gs :call LanguageClient_textDocument_documentSymbol()<CR>
-nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
-
-let g:LanguageClient_autoStart      = 1    " Automatically start language servers.
-let g:LanguageClient_loadSettings   = 1    " Use an absolute configuration path if you want system-wide settings
-let g:LanguageClient_useVirtualText = "No" " Disable virtual text diagnostics
-let g:LanguageClient_serverCommands = {
-    \ 'sh': [
-      \ '~/.vim/plugged/bash-language-server/server/bin/main.js',
-      \ 'start'],
-    \ 'c': [
-      \ '~/.vim/plugged/cquery/build/release/bin/cquery',
-      \ '--log-file=/tmp/cq.log'],
-    \ 'cpp': [
-      \ '~/.vim/plugged/cquery/build/release/bin/cquery',
-      \ '--log-file=/tmp/cq.log'],
-    \ 'javascript': [
-      \ 'node',
-      \ '~/.vim/plugged/javascript-typescript-langserver/lib/language-server-stdio'],
-    \ 'php': [
-      \ 'php',
-      \ '~/.vim/plugged/php-language-server/bin/php-language-server.php'],
-    \ 'puppet': [
-      \ 'ruby',
-      \ '~/.vim/plugged/puppet-editor-services/puppet-languageserver',
-      \ '--stdio',
-      \ '--timeout=10',
-      \ '--debug=/home/marc.deop/puppet-debug.log',
-      \ '-c'],
-    \ 'python': [
-      \ '~/.local/bin/pyls',
-      \ '--log-file=/tmp/pyls.log'],
-    \ 'ruby': [
-      \ 'docker',
-      \ 'run',
-      \ 'mtsmfm/language_server-ruby'],
-    \ 'rust': [
-      \ 'rustup',
-      \ 'run',
-      \ 'nightly',
-      \ 'rls'],
-    \ 'terraform': [
-      \ 'terraform-lsp'],
-    \ 'xml': [
-      \ 'java',
-      \ '-jar',
-      \ '~/.vim/plugged/lsp4xml/org.eclipse.lsp4xml/target/org.eclipse.lsp4xml-all.jar'],
-    \ 'yaml.ansible': [
-      \ 'node',
-      \ '~/tmp/yaml-language-server/out/server/src/server.js',
-      \ '--stdio']
-    \ }
-let g:LanguageClient_diagnosticsDisplay = {
-      \ 1: {
-        \ "name": "Error",
-        \ "texthl": "ALEError",
-        \ "signText": "✖",
-        \ "signTexthl": "ALEErrorSign",
-        \ "virtualTexthl": "Error",
-      \ },
-      \ 2: {
-        \ "name": "Warning",
-        \ "texthl": "ALEWarning",
-        \ "signText": "⚠",
-        \ "signTexthl": "ALEWarningSign",
-        \ "virtualTexthl": "Todo",
-      \ },
-      \ 3: {
-        \ "name": "Information",
-        \ "texthl": "ALEInfo",
-        \ "signText": "ℹ",
-        \ "signTexthl": "ALEInfoSign",
-        \ "virtualTexthl": "Todo",
-      \ },
-      \ 4: {
-        \ "name": "Hint",
-        \ "texthl": "ALEInfo",
-        \ "signText": "➤",
-        \ "signTexthl": "ALEInfoSign",
-        \ "virtualTexthl": "Todo",
-      \ },
-    \ }
 
 """""""""""""""""""""""
 "  Markdown Composer  "
@@ -537,7 +579,7 @@ let g:tagbar_type_puppet = {
   \ 'kinds': [
     \'c:class',
     \'s:site',
-    \'n:node',  
+    \'n:node',
     \'d:definition',
     \'r:resource',
     \'f:default'
@@ -573,14 +615,7 @@ map <Leader>vq :VimuxCloseRunner<CR>                                     " Close
 map <Leader>vx :VimuxInterruptRunner<CR>                                 " Interrupt any command running in the runner pane
 map <Leader>vz :call VimuxZoomRunner()<CR>                               " Zoom the runner pane (use <bind-key> z to restore runner pane)
 
-""""""""""
-"  Ncm2  "
-""""""""""
-" enable ncm2 for all buffer
-autocmd BufEnter * call ncm2#enable_for_buffer()
-
 " note that must keep noinsert in completeopt, the others is optional
 set completeopt=noinsert,menuone,noselect,preview
-inoremap <silent> <expr> <CR> ncm2_ultisnips#expand_or("\<CR>", 'n')
 inoremap <Nul> <C-x><C-o>
 
