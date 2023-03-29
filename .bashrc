@@ -27,6 +27,7 @@ export FZF_DEFAULT_OPTS="--border-label-pos=1 \
                          --height 50% \
                          -1 \
                          --multi \
+                         --bind ctrl-j:down,ctrl-k:up \
                          --preview='[[ \$(file --mime {}) =~ binary ]] \
                          && echo {} is a binary file \
                            || (bat --style=numbers --color=always {} \
@@ -40,6 +41,10 @@ export FZF_CTRL_R_OPTS="--preview \
 export FZF_CTRL_T_OPTS="--select-1 --exit-0 --border-label='Files '"
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200' \
                        --border-label='Directories '"
+
+if [ -f .fzfFunctions.sh ]; then
+  source .fzfFunctions.sh
+fi
 
 ###############################################################################
 #                                   VI mode                                   #
@@ -93,7 +98,7 @@ fi
 # https://gitlab.gnome.org/GNOME/gtk/-/merge_requests/4829
 export GTK_USE_PORTAL=1
 export EMAIL="terminal@marcdeop.com"
-export RPM_PACKAGER="Marc Deop <marcdeop@fedoraproject.org>"
+export RPM_PACKAGER="Marc Deop i Argemí <marcdeop@fedoraproject.org>"
 
 # Needed by https://github.com/elFarto/nvidia-vaapi-driver
 export LIBVA_DRIVER_NAME="nvidia"
