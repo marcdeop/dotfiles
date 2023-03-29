@@ -17,16 +17,6 @@ function! BuildCommandT(info)
   !cd ruby/command-t/ext/command-t && ruby extconf.rb && make
 endfunction
 
-function! BuildMarkdownComposer(info)
-  if a:info.status != 'unchanged' || a:info.force
-    if has('nvim')
-      !cargo build --release
-    else
-      !cargo build --release --no-default-features --features json-rpc
-    endif
-  endif
-endfunction
-
 function! BuildJavascriptLanguageServer(info)
   !npm install && npm run build && git checkout -- package-lock.json
 endfunction
@@ -40,18 +30,12 @@ function! BuildPuppetLanguageServer(info)
   !bundle exec rake gem_revendor
 endfunction
 
-function! BuildXMLLanguageServer(info)
-  !./mvnw clean verify
-endfunction
-
-function! BuildYCM(info)
-  !./install.py --all
-endfunction
 
 call plug#begin('~/.vim/plugged')
 Plug 'aklt/plantuml-syntax'                                                                           " Syntax file for plantuml.
 Plug 'andymass/vim-matchup'                                                                           " Extended matching with '%'.
-Plug 'angelozerr/lsp4xml', { 'do': function('BuildXMLLanguageServer') }                               " XML Language Server.
+Plug 'anuvyklack/fold-preview.nvim'
+    \ | Plug 'anuvyklack/keymap-amend.nvim'                                                           " Preview close folds, without opening them.
 Plug 'airblade/vim-gitgutter'                                                                         " Shows a git diff in the sign column. Stage and undo individual hunks.
 Plug 'Badacadabra/vim-archery'                                                                        " Vim colorscheme inspired by Arch Linux colors.
 Plug 'benmills/vimux'                                                                                 " Easily interact with tmux from vim.
@@ -63,17 +47,22 @@ Plug 'cyansprite/Extract'                                                       
 Plug 'dracula/vim'                                                                                    " Dracula colorscheme for vim.
 Plug 'easymotion/vim-easymotion'                                                                      " Vim motion on speed!.
 Plug 'editorconfig/editorconfig-vim'                                                                  " Follow .editorconfig settings in projects.
-Plug 'euclio/vim-markdown-composer', { 'do': function('BuildMarkdownComposer') }                      " Adds asynchronous Markdown preview.
 Plug 'fenetikm/falcon'                                                                                " A colour scheme for terminals, Vim and friends.
 Plug 'godlygeek/tabular'                                                                              " Align text easily.
 Plug 'hashivim/vim-terraform'                                                                         " Terraform filetype and highlight
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}                              " Markdown preview plugin for neovim.
-Plug 'joshdick/onedark.vim'                                                                           " A dark Vim/Neovim color scheme inspired by Atom's One Dark syntax theme.
-Plug 'puppetlabs/puppet-editor-services', { 'do': function('BuildPuppetLanguageServer') }             " Puppet Language support for the Language Server Protocol.
-Plug 'jsfaint/gen_tags.vim'                                                                           " Async plugin to ease the use of ctags/gtags.
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-nvim-lua'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 'markdown' }          " Markdown preview plugin for neovim.
+Plug 'jose-elias-alvarez/null-ls.nvim'                                                                " Use Neovim as a language server to inject LSP diagnostics, code actions, and more via Lua.
 Plug 'junegunn/fzf.vim'                                                                               " fuzzy finder for vim.
 Plug 'junegunn/goyo.vim'                                                                              " Distraction-free writing in Vim.
 Plug 'junegunn/gv.vim'                                                                                " Git commit browser.
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'L3MON4D3/LuaSnip', {'tag': 'v1.*', 'do': 'make install_jsregexp'}
 Plug 'lifepillar/vim-solarized8'                                                                      " Solarized true color colorscheme for vim.
 Plug 'mads-hartmann/bash-language-server', { 'do': function('BuildBashLanguageServer') }              " A language server for Bash.
 Plug 'majutsushi/tagbar'                                                                              " Vim plugin that displays tags in a window, ordered by scope
@@ -81,12 +70,24 @@ Plug 'marcdeop/php-language-server', { 'do': function('BuildPhpLanguageServer'),
 Plug 'MicahElliott/Rocannon',                                                                         " Vim for Ansible playbooks.
 Plug 'mileszs/ack.vim'                                                                                " Run your favorite search tool from vim.
 Plug 'morhetz/gruvbox'                                                                                " Gruvbox colorscheme for vim.
+Plug 'MunifTanjim/nui.nvim'                                                                           " UI Component Library for Neovim.
 Plug 'nathanaelkane/vim-indent-guides'                                                                " Visually diosplaying indent levels for vim.
-Plug 'neoclide/coc.nvim', {'branch': 'release'}                                                       " Make your Vim/Neovim as smart as VSCode.
+Plug 'neovim/nvim-lspconfig'                                                                          " Configs for the Nvim LSP client (:help lsp).
+Plug 'nvim-lua/plenary.nvim'                                                                          " All the lua functions I don't want to write twice.
+Plug 'nvim-lualine/lualine.nvim'                                                                      " A blazing fast and easy to configure Neovim statusline written in Lua.
+Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }                                           " Highly extendable fuzzy finder over lists.
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}                                           " Simple and easy way to use the interface for tree-sitter
 Plug 'npmiller/vreeze'                                                                                " Breeze inspired vim colorscheme
+Plug 'olimorris/onedarkpro.nvim'                                                                      " Highly customisable Neovim theme. With support for custom colors, styles and highlights by filetype Inspired by VS Code's One Dark Pro
 Plug 'pearofducks/ansible-vim', { 'do': 'cd ./UltiSnips; ./generate.py' }
+Plug 'peterhoeg/vim-qml'                                                                              " QML syntax file for VIM
+Plug 'puppetlabs/puppet-editor-services', { 'do': function('BuildPuppetLanguageServer') }             " Puppet Language support for the Language Server Protocol.
+Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 Plug 'rakr/vim-one'                                                                                   " Adaptation of one-light and one-dark colorschemes for Vim.
+Plug 'ray-x/lsp_signature.nvim'                                                                       " Show function signature when you type.
+Plug 'rmagatti/goto-preview'                                                                          " Preview native LSP's goto definition, type definition, implementation, and references calls in floating windows.
 Plug 'rodjek/vim-puppet'                                                                              " Make vim more puppet friendly!.
+Plug 'sainnhe/gruvbox-material'                                                                       " Gruvbox fork.
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
   \ | Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
 Plug 'shumphrey/fugitive-gitlab.vim'                                                                  " Allows use of vim-fugitive with gitlab repositories
@@ -95,6 +96,7 @@ Plug 'Shougo/neco-vim'                                                          
 Plug 'Shougo/neco-syntax'                                                                             " Syntax autocompletion.
 Plug 'sickill/vim-pasta'                                                                              " context-aware pasting.
 Plug 'SidOfc/mkdx',                                                                                   " Nice extras for working with markdown documents
+Plug 'simrat39/symbols-outline.nvim'                                                                  " A tree like view for symbols via LSP
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'                                                   " Snippets for vim.
 Plug 'sjl/gundo.vim'                                                                                  " Visualize your vim undo tree.
 Plug 'sourcegraph/javascript-typescript-langserver', { 'do': 'npm install && npm run build' }         " Language server protocol for javascript.
@@ -103,13 +105,14 @@ Plug 'tpope/vim-fugitive'                                                       
 Plug 'tpope/vim-repeat'                                                                               " Enable repeating supported plugin maps with `.`
 Plug 'tpope/vim-surround'                                                                             " Quoting/parenthesizing made simple.
 Plug 'tyru/open-browser.vim'                                                                          " Open URI with your favorite browser from your most favorite editor.
-Plug 'vim-airline/vim-airline'                                                                        " Lean & mean status/tabline for vim.
-Plug 'vim-airline/vim-airline-themes'                                                                 " Themes for vim-airline.
 Plug 'vim-pandoc/vim-pandoc'                                                                          " Facilities to integrate Vim with the pandoc document converter.
 Plug 'vim-pandoc/vim-pandoc-syntax'                                                                   " Standalone pandoc syntax module.
 Plug 'vim-utils/vim-man'                                                                              " View man pages in vim. Grep for the man pages.
 Plug 'weirongxu/plantuml-previewer.vim'                                                               " Preview PlantUML.
-Plug 'w0rp/ale'                                                                                       " Asynchronous lint engine.
+Plug 'williamboman/mason.nvim'                                                                        " Easily install and manage LSP servers, DAP servers, linters, and formatters.
+Plug 'williamboman/mason-lspconfig.nvim'                                                              " Bridges mason.nvim with the lspconfig plugin - making it easier to use both plugins together.
+Plug 'windwp/nvim-autopairs'                                                                          " A super powerful autopair plugin for Neovim that supports multiple characters.
+Plug 'Yggdroot/indentLine'                                                                            " Display thin vertical lines at each indentation level for code indented with spaces.
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -139,8 +142,9 @@ set hidden                        " Required for operations modifying multiple b
 set ttyfast                       " Faster redrawing
 set diffopt+=vertical             " Open diff in vertical split
 set rtp^=/usr/share/vim/vimfiles/ " Make sure we read vimfiles ( in case we use nvim)
-set cmdheight=2                   " Give more space for displaying messages
+set cmdheight=1                   " Give more space for displaying messages
 set updatetime=300                " Reduce to 300 because default is 4000!
+set showtabline=0                 " Do not show the tab bar on the top. Beware of airline!
 
 " handling proper lenght of lines
 set wrap
@@ -158,8 +162,23 @@ nnoremap <leader>z :wincmd _<cr>               " Zoom a vim pane
 nnoremap <leader>= :wincmd =<cr>               " Rebalance panes
 vnoremap <C-c> "+y                             " <C-c> copy selection to clipboard
 vnoremap <C-x> "+d                             " <C-x> cut selection to clipboard
-nnoremap <leader><space> :noh<cr>              "clear highlighted text  matched on a search
-map <leader>v            :set paste!<cr>       " toggle paste mode
+" Workaround for neovim wl-clipboard and netrw interaction hang
+" (see: https://github.com/neovim/neovim/issues/6695 and
+" https://github.com/neovim/neovim/issues/9806) 
+let g:clipboard = {
+      \   'name': 'myClipboard',
+      \   'copy': {
+      \      '+': 'pbcopy',
+      \      '*': 'pbcopy',
+      \    },
+      \   'paste': {
+      \      '+': 'pbpaste',
+      \      '*': 'pbpaste',
+      \   },
+      \   'cache_enabled': 1,
+      \ }
+
+map <leader>v            :set paste!<cr> " toggle paste mode
 nnoremap <Leader>n       :NERDTreeToggle<cr>
 nnoremap <Leader>-       :vertical resize -10<cr>
 nnoremap <Leader>+       :vertical resize +10<cr>
@@ -215,26 +234,12 @@ noremap <silent> ,u
   \ :<C-B>sil <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:noh<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"                                  FUNCTIONS                                  "
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! RubyHashesAll()
-  :%s/:\([^ ]*\)\(\s*\)=>/\1:/ge
-endfunction
-
-function! RubyHashesSelected()
-  :'<,'>s/:\([^ ]*\)\(\s*\)=>/\1:/ge
-endfunction
-
-nmap <Leader>rhh :call RubyHashesAll()<CR>
-vmap <Leader>rhh :call RubyHashesSelected()<CR>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                 APPEARANCE                                  "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set t_Co=256
 set background=dark
 set termguicolors
-colorscheme gruvbox
+colorscheme onedark
 
 " specific to one theme
 let g:solarized_visibility="high" "make trailing chars extra visible
@@ -267,26 +272,10 @@ set expandtab
 
 filetype plugin on
 set omnifunc=syntaxcomplete#Complete
-"set completeopt=longest,menuone
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                   PLUGINS                                   "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-"""""""""
-"  Ack  "
-"""""""""
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
-endif
-
-"""""""""
-"  Ale  "
-"""""""""
-let g:ale_sign_error = '✗✗'
-let g:ale_sign_warning = '∆∆'
-highlight clear ALEErrorSign
-highlight clear ALEWarningSign
 
 """""""""""""
 "  Airline  "
@@ -294,15 +283,20 @@ highlight clear ALEWarningSign
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
-let g:airline_theme                               = 'gruvbox' " airline theme
+let g:airline_theme                              = 'onedark'
 let g:airline_powerline_fonts                     = 1
 let g:airline#extensions#tagbar#enabled           = 1     " enable/disable tagbar integration >
-let g:airline#extensions#tabline#enabled          = 1     " Enable the list of buffers
+let g:airline#extensions#tabline#enabled          = 0     " Enable the list of buffers
 let g:airline#extensions#tabline#buffer_min_count = 0     " configure the minimum number of buffers needed to show the tabline.
 let g:airline#extensions#branch#enabled           = 1     " enable/disable fugitive/lawrencium integration
 let g:airline#extensions#branch#empty_message     = ''    " change the text for when no branch is detected
 let g:airline#extensions#branch#use_vcscommand    = 0     " do not use vcscommand.vim if available
 let g:airline_exclude_filetypes                   = ['nerdtree']
+
+"""""""""
+"  cmp  "
+"""""""""
+" lua/user/cmd.lua
 
 """"""""""""""""
 "  EasyMotion  "
@@ -314,154 +308,6 @@ map <Leader>j <Plug>(easymotion-j)
 map <Leader>k <Plug>(easymotion-k)
 map <Leader>l <Plug>(easymotion-lineforward)
 map <Leader>h <Plug>(easymotion-linebackward)
-
-"""""""""
-"  CoC  "
-"""""""""
-let g:coc_global_extensions = [
-  \ 'coc-clangd',
-  \ 'coc-cmake',
-  \ 'coc-css',
-  \ 'coc-docker',
-  \ 'coc-emoji',
-  \ 'coc-git',
-  \ 'coc-go',
-  \ 'coc-html',
-  \ 'coc-java',
-  \ 'coc-jedi',
-  \ 'coc-json',
-  \ 'coc-lists',
-  \ 'coc-markdownlint',
-  \ 'coc-phpls',
-  \ 'coc-rls',
-  \ 'coc-sh',
-  \ 'coc-snippets',
-  \ 'coc-tag',
-  \ 'coc-tsserver',
-  \ 'coc-ultisnips',
-  \ 'coc-yaml',
-  \ 'coc-yank'
-  \]
-" Use `[g` and `]g` to navigate diagnostics
-" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
-
-" Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
-    call CocActionAsync('doHover')
-  else
-    execute '!' . &keywordprg . " " . expand('<cword>')
-  endif
-endfunction
-
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
-
-augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
-
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
-
-" Remap keys for applying codeAction to the current buffer.
-nmap <leader>ac  <Plug>(coc-codeaction)
-
-" Apply AutoFix to problem on the current line.
-nmap <leader>qf  <Plug>(coc-fix-current)
-
-" Run the Code Lens action on the current line.
-nmap <leader>cl  <Plug>(coc-codelens-action)
-
-" Map function and class text objects
-" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-xmap if <Plug>(coc-funcobj-i)
-omap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap af <Plug>(coc-funcobj-a)
-xmap ic <Plug>(coc-classobj-i)
-omap ic <Plug>(coc-classobj-i)
-xmap ac <Plug>(coc-classobj-a)
-omap ac <Plug>(coc-classobj-a)
-
-" Remap <C-f> and <C-b> for scroll float windows/popups.
-if has('nvim-0.4.0') || has('patch-8.2.0750')
-  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
-  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
-  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-endif
-
-" Use CTRL-S for selections ranges.
-" Requires 'textDocument/selectionRange' support of language server.
-nmap <silent> <C-s> <Plug>(coc-range-select)
-xmap <silent> <C-s> <Plug>(coc-range-select)
-
-" Add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocActionAsync('format')
-
-" Add `:Fold` command to fold current buffer.
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-
-" Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
-
-" Add (Neo)Vim's native statusline support.
-" NOTE: Please see `:h coc-status` for integrations with external plugins that
-" provide custom statusline: lightline.vim, vim-airline.
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
-" Mappings for CoCList
-" Show all diagnostics.
-nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
-
-" Manage extensions
-nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
-
-" Show commands.
-nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
-
-" Find symbol of current document.
-nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
-
-" Search workspace symbols.
-nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
-
-" Do default action for next item.
-nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
-
-" Do default action for previous item.
-nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
-
-" Resume latest coc list.
-nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
 """"""""""""""""""
 "  EditorConfig  "
@@ -486,18 +332,6 @@ nmap <silent><leader>ge :Gedit<cr>
 nmap <silent><leader>gr :Gread<cr>
 nmap <silent><leader>gb :Gblame<cr>
 
-"""""""""
-"  FZF  "
-"""""""""
-nmap <silent><leader>t :Files<cr>
-nmap <silent><leader>a :Ag<cr>
-nmap <silent><leader>b :Buffers<cr>
-
-"""""""""""""""""""""""
-"  Markdown Composer  "
-"""""""""""""""""""""""
-let g:markdown_composer_autostart = 0
-
 """"""""""""""""""""""
 "  Markdown Preview  "
 """"""""""""""""""""""
@@ -521,6 +355,7 @@ let g:mkdp_markdown_css = ''
 let g:mkdp_highlight_css = ''
 let g:mkdp_port = ''
 let g:mkdp_page_title = '「${name}」'
+
 """"""""""
 "  MKDX  "
 """"""""""
@@ -539,7 +374,7 @@ let g:mkdx#settings = {
       \                              'initial_state': ' ' },
       \ 'toc':                     { 'text': "Table of Contents",
       \                              'list_token': '*',
-      \                              'update_on_write': 1,
+      \                              'update_on_write': 0,
       \                              'position': 2,
       \                              'details': {
       \                                 'enable': 0,
@@ -590,6 +425,16 @@ let g:tagbar_type_puppet = {
   \]
 \}
 
+"""""""""""""""
+"  Telescope  "
+"""""""""""""""
+" lua/user/telescope.lua
+
+"""""""""""""""
+"  lspconfig  "
+"""""""""""""""
+" lua/user/lspconfig.lua
+
 """"""""""
 "  Tmux  "
 """"""""""
@@ -603,6 +448,7 @@ nnoremap <silent> <c-\> :TmuxNavigatePrevious<cr>
 """""""""""""""
 "  UltiSnips  "
 """""""""""""""
+"<tab> used by cmp these days :-)
 "let g:UltiSnipsExpandTrigger='<tab>'
 let g:UltiSnipsListSnippets='<c-l>'
 let g:UltiSnipsEditSplit='vertical'           " Open snips vertically
@@ -618,8 +464,3 @@ map <Leader>vi :VimuxInspectRunner<CR>                                   " Inspe
 map <Leader>vq :VimuxCloseRunner<CR>                                     " Close vim tmux runner opened by VimuxRunCommand
 map <Leader>vx :VimuxInterruptRunner<CR>                                 " Interrupt any command running in the runner pane
 map <Leader>vz :call VimuxZoomRunner()<CR>                               " Zoom the runner pane (use <bind-key> z to restore runner pane)
-
-" note that must keep noinsert in completeopt, the others is optional
-set completeopt=noinsert,menuone,noselect,preview
-inoremap <Nul> <C-x><C-o>
-
