@@ -5,6 +5,7 @@ require('telescope').setup{
 --  Key Mappings  --
 --------------------
 vim.keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<CR>", {noremap=true})
+vim.keymap.set("n", "<leader>fc", "<cmd>Telescope git_commits<CR>", {noremap=true})
 vim.keymap.set("n", "<leader>fd", "<cmd>Telescope diagnostics<CR>", {noremap=true})
 vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<CR>", {noremap=true})
 vim.keymap.set("n", "<leader>fg", "<cmd>Telescope grep_string<CR>", {noremap=true})
