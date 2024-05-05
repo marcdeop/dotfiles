@@ -56,7 +56,6 @@ Plug 'hrsh7th/cmp-nvim-lua'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 'markdown' }          " Markdown preview plugin for neovim.
-Plug 'jose-elias-alvarez/null-ls.nvim'                                                                " Use Neovim as a language server to inject LSP diagnostics, code actions, and more via Lua.
 Plug 'junegunn/fzf.vim'                                                                               " fuzzy finder for vim.
 Plug 'junegunn/goyo.vim'                                                                              " Distraction-free writing in Vim.
 Plug 'junegunn/gv.vim'                                                                                " Git commit browser.
@@ -68,6 +67,7 @@ Plug 'lukas-reineke/indent-blankline.nvim'                                      
 Plug 'mads-hartmann/bash-language-server', { 'do': function('BuildBashLanguageServer') }              " A language server for Bash.
 Plug 'majutsushi/tagbar'                                                                              " Vim plugin that displays tags in a window, ordered by scope
 Plug 'marcdeop/php-language-server', { 'do': function('BuildPhpLanguageServer'), 'branch': 'rename' } " Language server protocol for php.
+Plug 'mfussenegger/nvim-lint',                                                                        " An asynchronous linter plugin for Neovim complementary to the built-in Language Server Protocol support.
 Plug 'MicahElliott/Rocannon',                                                                         " Vim for Ansible playbooks.
 Plug 'mileszs/ack.vim'                                                                                " Run your favorite search tool from vim.
 Plug 'morhetz/gruvbox'                                                                                " Gruvbox colorscheme for vim.
