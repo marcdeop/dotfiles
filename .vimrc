@@ -62,6 +62,7 @@ Plug 'junegunn/gv.vim'                                                          
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'L3MON4D3/LuaSnip', {'tag': 'v1.*', 'do': 'make install_jsregexp'}
 Plug 'lewis6991/gitsigns.nvim'                                                                        " Super fast git decorations implemented purely in Lua.
+Plug 'lewis6991/hover.nvim'                                                                           " General framework for context aware hover providers (similar to vim.lsp.buf.hover).
 Plug 'lifepillar/vim-solarized8'                                                                      " Solarized true color colorscheme for vim.
 Plug 'lukas-reineke/indent-blankline.nvim'                                                            " Add indentation guides to Neovim
 Plug 'mads-hartmann/bash-language-server', { 'do': function('BuildBashLanguageServer') }              " A language server for Bash.
