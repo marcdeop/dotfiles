@@ -105,11 +105,11 @@ cmp.setup {
                                     kind_icons[vim_item.kind],
                                     vim_item.kind)
       vim_item.menu = ({
+        nvim_lsp = "[LSP]",
+        nvim_lsp_signature_help = "[Signature]",
         buffer = "[Buffer]",
         cmdline = "[Vim Command]",
         luasnip = "[Luasnip]",
-        nvim_lsp = "[LSP]",
-        nvim_lsp_signature_help = "[Signature]",
         path = "[Path]",
         treesitter = "[Treesitter]",
         ultisnips = "[UltiSnips]",
