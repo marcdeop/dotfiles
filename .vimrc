@@ -36,7 +36,6 @@ Plug 'aklt/plantuml-syntax'                                                     
 Plug 'andymass/vim-matchup'                                                                           " Extended matching with '%'.
 Plug 'anuvyklack/fold-preview.nvim'
     \ | Plug 'anuvyklack/keymap-amend.nvim'                                                           " Preview close folds, without opening them.
-Plug 'airblade/vim-gitgutter'                                                                         " Shows a git diff in the sign column. Stage and undo individual hunks.
 Plug 'Badacadabra/vim-archery'                                                                        " Vim colorscheme inspired by Arch Linux colors.
 Plug 'benmills/vimux'                                                                                 " Easily interact with tmux from vim.
 Plug 'brooth/far.vim'                                                                                 " Find and replace for vim.
@@ -63,7 +62,9 @@ Plug 'junegunn/goyo.vim'                                                        
 Plug 'junegunn/gv.vim'                                                                                " Git commit browser.
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'L3MON4D3/LuaSnip', {'tag': 'v1.*', 'do': 'make install_jsregexp'}
+Plug 'lewis6991/gitsigns.nvim'                                                                        " Super fast git decorations implemented purely in Lua.
 Plug 'lifepillar/vim-solarized8'                                                                      " Solarized true color colorscheme for vim.
+Plug 'lukas-reineke/indent-blankline.nvim'                                                            " Add indentation guides to Neovim
 Plug 'mads-hartmann/bash-language-server', { 'do': function('BuildBashLanguageServer') }              " A language server for Bash.
 Plug 'majutsushi/tagbar'                                                                              " Vim plugin that displays tags in a window, ordered by scope
 Plug 'marcdeop/php-language-server', { 'do': function('BuildPhpLanguageServer'), 'branch': 'rename' } " Language server protocol for php.
@@ -71,14 +72,14 @@ Plug 'MicahElliott/Rocannon',                                                   
 Plug 'mileszs/ack.vim'                                                                                " Run your favorite search tool from vim.
 Plug 'morhetz/gruvbox'                                                                                " Gruvbox colorscheme for vim.
 Plug 'MunifTanjim/nui.nvim'                                                                           " UI Component Library for Neovim.
-Plug 'nathanaelkane/vim-indent-guides'                                                                " Visually diosplaying indent levels for vim.
+Plug 'navarasu/onedark.nvim'                                                                          " Dark and Light Themes for neovim >= 0.5 based on Atom One Dark & Atom One Light
 Plug 'neovim/nvim-lspconfig'                                                                          " Configs for the Nvim LSP client (:help lsp).
 Plug 'nvim-lua/plenary.nvim'                                                                          " All the lua functions I don't want to write twice.
 Plug 'nvim-lualine/lualine.nvim'                                                                      " A blazing fast and easy to configure Neovim statusline written in Lua.
-Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }                                           " Highly extendable fuzzy finder over lists.
+Plug 'nvim-neo-tree/neo-tree.nvim'                                                                    " Browse the file system and other tree like structures in whatever style suits you
+Plug 'nvim-telescope/telescope.nvim', { 'branch': 'master' }                                          " Highly extendable fuzzy finder over lists.
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}                                           " Simple and easy way to use the interface for tree-sitter
 Plug 'npmiller/vreeze'                                                                                " Breeze inspired vim colorscheme
-Plug 'olimorris/onedarkpro.nvim'                                                                      " Highly customisable Neovim theme. With support for custom colors, styles and highlights by filetype Inspired by VS Code's One Dark Pro
 Plug 'pearofducks/ansible-vim', { 'do': 'cd ./UltiSnips; ./generate.py' }
 Plug 'peterhoeg/vim-qml'                                                                              " QML syntax file for VIM
 Plug 'puppetlabs/puppet-editor-services', { 'do': function('BuildPuppetLanguageServer') }             " Puppet Language support for the Language Server Protocol.
@@ -88,8 +89,6 @@ Plug 'ray-x/lsp_signature.nvim'                                                 
 Plug 'rmagatti/goto-preview'                                                                          " Preview native LSP's goto definition, type definition, implementation, and references calls in floating windows.
 Plug 'rodjek/vim-puppet'                                                                              " Make vim more puppet friendly!.
 Plug 'sainnhe/gruvbox-material'                                                                       " Gruvbox fork.
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-  \ | Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
 Plug 'shumphrey/fugitive-gitlab.vim'                                                                  " Allows use of vim-fugitive with gitlab repositories
 Plug 'Shougo/echodoc.vim'                                                                             " Show function signature and inline doc.
 Plug 'Shougo/neco-vim'                                                                                " Autocompletion for vimscript.
@@ -178,8 +177,11 @@ let g:clipboard = {
       \   'cache_enabled': 1,
       \ }
 
-map <leader>v            :set paste!<cr> " toggle paste mode
-nnoremap <Leader>n       :NERDTreeToggle<cr>
+map <leader>v :set paste!<cr> " toggle paste mode
+nnoremap <Leader>n :Neotree toggle right<cr>
+nnoremap <leader>b :Neotree toggle float buffers<cr>
+nnoremap <leader>g :Neotree toggle float git_status<cr>
+
 nnoremap <Leader>-       :vertical resize -10<cr>
 nnoremap <Leader>+       :vertical resize +10<cr>
 nnoremap <Leader>h-      :resize -10<cr>
@@ -239,6 +241,9 @@ noremap <silent> ,u
 set t_Co=256
 set background=dark
 set termguicolors
+let g:onedark_config = {
+    \ 'style': 'dark',
+\}
 colorscheme onedark
 
 " specific to one theme
@@ -401,14 +406,6 @@ let g:mkdx#settings = {
       \                            },
       \ 'highlight':               { 'enable': 1 },
       \ 'auto_update':             { 'enable': 1 }}
-
-""""""""""""""
-"  NERDTree  "
-""""""""""""""
-let NERDTreeWinSize = 30
-let g:NERDTreeQuitOnOpen = 0
-let NERDTreeShowHidden = 1
-let NERDTreeMinimalUI = 1
 
 """"""""""""
 "  Tagbar  "
