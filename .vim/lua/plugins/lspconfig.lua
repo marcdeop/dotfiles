@@ -58,7 +58,7 @@ require('lspconfig')['pylsp'].setup{
         },
         pylint = {
           enabled = true,
-          args = { '--init-hook "import sys; sys.path.append(\'/usr/lib/python3.11/site-packages/\'); sys.path.append(\'/home/marc/.local/lib/python3.11/site-packages\')"' },
+          args = { '--init-hook "import sys; sys.path.append(\'/usr/lib/python3.12/site-packages/\'); sys.path.append(\'/home/marc/.local/lib/python3.12/site-packages\')"' },
         },
         isort = {
           enabled = true,
