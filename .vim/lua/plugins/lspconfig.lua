@@ -24,7 +24,13 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
   vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
   vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-  vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
+  -- If we use an anonymous function like below, telescope keymaps won't show
+  -- any valid name:
+  -- vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
+  local function vim_lsp_buf_format()
+    vim.lsp.buf.format { async = true }
+  end
+  vim.keymap.set('n', '<space>f', vim_lsp_buf_format, bufopts)
 end
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
