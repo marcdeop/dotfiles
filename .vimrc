@@ -47,6 +47,7 @@ Plug 'dracula/vim'                                                              
 Plug 'easymotion/vim-easymotion'                                                                      " Vim motion on speed!.
 Plug 'editorconfig/editorconfig-vim'                                                                  " Follow .editorconfig settings in projects.
 Plug 'fenetikm/falcon'                                                                                " A colour scheme for terminals, Vim and friends.
+Plug 'folke/noice.nvim'                                                                               " A plugin that completely replaces the UI for messages, cmdline and the popupmenu
 Plug 'godlygeek/tabular'                                                                              " Align text easily.
 Plug 'hashivim/vim-terraform'                                                                         " Terraform filetype and highlight
 Plug 'hrsh7th/cmp-buffer'
@@ -87,6 +88,7 @@ Plug 'puppetlabs/puppet-editor-services', { 'do': function('BuildPuppetLanguageS
 Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 Plug 'rakr/vim-one'                                                                                   " Adaptation of one-light and one-dark colorschemes for Vim.
 Plug 'ray-x/lsp_signature.nvim'                                                                       " Show function signature when you type.
+Plug 'rcarriga/nvim-notify'                                                                           " A fancy, configurable, notification manager for NeoVim
 Plug 'rmagatti/goto-preview'                                                                          " Preview native LSP's goto definition, type definition, implementation, and references calls in floating windows.
 Plug 'rodjek/vim-puppet'                                                                              " Make vim more puppet friendly!.
 Plug 'sainnhe/gruvbox-material'                                                                       " Gruvbox fork.
@@ -97,6 +99,7 @@ Plug 'Shougo/neco-syntax'                                                       
 Plug 'sickill/vim-pasta'                                                                              " context-aware pasting.
 Plug 'SidOfc/mkdx',                                                                                   " Nice extras for working with markdown documents
 Plug 'simrat39/symbols-outline.nvim'                                                                  " A tree like view for symbols via LSP
+Plug 'sindrets/diffview.nvim'                                                                         " Single tabpage interface for easily cycling through diffs for all modified files for any git rev.
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'                                                   " Snippets for vim.
 Plug 'sjl/gundo.vim'                                                                                  " Visualize your vim undo tree.
 Plug 'sourcegraph/javascript-typescript-langserver', { 'do': 'npm install && npm run build' }         " Language server protocol for javascript.
