@@ -1,0 +1,349 @@
+[alias]
+  ## Get default granch for the repository
+  ## @see `symbolic-ref`
+  default = "!f() { \
+             branch=\"$(git symbolic-ref refs/remotes/origin/HEAD --short)\"; \
+             echo ${branch##*/}; \
+             }; f"
+
+  ## Get the remote "type" we are working with (Gitlab, Github...)
+  ## By default we expect to work with gitlab
+  ## @see `remote`
+  remote-type = "!f() { \
+             URL=\"$(git remote get-url --push origin)\"; \
+             URL=\"${URL##*git@}\"; \
+             URL=\"${URL%%:*}\"; \
+             if [[ \"${URL}\" =~ \"github.com\" ]]; then \
+               echo github; \
+             else \
+               echo gitlab; \
+             fi; \
+             }; f"
+
+  ## Shortcut for `checkout`
+  ## @see `checkout`
+  co = checkout
+
+  ## Fixup the given Commit ID or HEAD by default
+  ## @param Commit ID
+  ## @see `commit`
+  fixup = "!f() { git commit --fixup \"${1:-HEAD}\"; }; f"
+
+  ## Shortcut for `push --force-with-lease`
+  ## @see `push`
+  please = push --force-with-lease
+
+  ## Publish the current branch
+  ## @see `push`
+  publish = push -u origin HEAD
+
+  ## Switch to selected branch using FILTER
+  ## sco stands for smart-checkout
+  ## @param FILTER
+  ## @see `checkout`
+  ## Example:
+  ## ```sh
+  ## > git sco emoji
+  ## Switched to branch 'feature/WEB-3939-emoji-keyboard/bed7'
+  ## ```
+  sco = "!f() { \
+         TARGET=\"$(git branch --format=\"%(refname:short)\" -i \
+                    | fzf --no-multi --reverse -q \"${1:-}\")\"; \
+         git checkout ${TARGET}; \
+         }; f"
+
+  ## Move the tip of your current branch to its upstream
+  ## @see `reset`
+  ## @warning This might destroy unpushed changes!
+  resetup = !git fetch -p && git reset --hard HEAD@{upstream}
+
+  ## Creates a new pull request for the current branch.
+  ## @warning this doesn't check if a PR already exists.
+  create-pr = "!f() { \
+               set -eu; \
+               if which gh &> /dev/null ; then \
+                 gh pr create -w ; \
+               else \
+                 URL=\"$(git remote get-url --push origin)\"; \
+                 URL=\"${URL#git@}\"; \
+                 URL=\"${URL%.git}\"; \
+                 URL=\"https://${URL/://}/pull/new/$(git rev-parse --abbrev-ref HEAD)\"; \
+                 echo opening $URL; \
+                 open \"$URL\"; \
+                 fi; \
+               }; f"
+
+  ## Opens an existing merge request for the current branch.
+  open-pr = "!f() { \
+             if which gh &> /dev/null ; then \
+               gh pr view -w ; \
+             else \
+               if ! git config --get-all remote.origin.fetch | grep +refs/pull/* &> /dev/null ; then \
+                 git config --add remote.origin.fetch '+refs/pull/*:refs/remotes/origin/pull/*'; \
+               fi; \
+               git fetch origin; \
+               PR=\"$(git branch -r --list origin/pull/* --contains HEAD | grep head)\"; \
+               PR=\"${PR%/head}\"; \
+               PR=\"${PR##*/}\"; \
+               if [ -z \"$PR\" ]; then \
+                 echo No PR found - switching to create-pr.; \
+                 git create-pr; \
+                 exit 0; \
+               fi; \
+               URL=\"$(git remote get-url --push origin)\"; \
+               URL=\"${URL#git@}\"; \
+               URL=\"${URL%.git}\"; \
+               URL=\"https://${URL/://}/pull/${PR}\"; \
+               echo opening $URL; \
+               open \"$URL\"; \
+             fi; \
+             }; f"
+
+  ## Creates a new merge request for the current branch.
+  ## @warning this doesn't check if a MR already exists.
+  create-mr = "!f() { \
+               set -eu; \
+               URL=$(git remote get-url --push origin); \
+               URL=${URL##*git@}; \
+               URL=${URL%.git}; \
+               URL=$(echo ${URL} | sed -E 's|:[1-9]+/|/|g'); \
+               URL="https://${URL/://}/-/merge_requests/new?merge_request%5Bsource_branch%5D=$(git rev-parse --abbrev-ref HEAD)"; \
+               echo opening $URL; \
+               open $URL; \
+               }; f"
+
+  ## Opens an existing merge request for the current branch.
+  open-mr = "!f() { \
+             set -eu; \
+             git config --add remote.origin.fetch +refs/merge-requests/*/head:refs/remotes/origin/merge-requests/*; \
+             git fetch origin; \
+             MR=$(git branch -r --list origin/merge-requests/* --contains HEAD); \
+             MR=${MR##*/}; \
+             if [ -z $MR ]; then \
+               echo No MR found - switching to create-mr.; \
+               git create-mr; \
+               exit 0; \
+             fi; \
+             URL=$(git remote get-url --push origin); \
+             URL=${URL#git@}; \
+             URL=${URL%.git}; \
+             URL="https://${URL/://}/merge_requests/${MR}"; \
+             echo opening $URL; \
+             open $URL; \
+             }; f"
+
+  ## Shortcut for `rebase --continue`
+  ## @see `rebase`
+  rebc = rebase --continue
+
+  ## Shortcut for `rebase --abort`
+  ## @see `rebase`
+  reba = rebase --abort
+
+  ## Shortcut for `cherry-pick --continue`
+  ## @see `cherry-pick`
+  chc = cherry-pick --continue
+
+  ## Shortcut for `cherry-pick --abort`
+  ## @see `cherry-pick`
+  cha = cherry-pick --abort
+
+  ## Syncs your repository and updates the default branch
+  ## @see `fetch`
+  ## @see `checkout`
+  ## @warning This will checkout master if possible
+  sync = "!f() { \
+          set -eu; \
+          CYAN='\\033[0;36m'; \
+          RED='\\033[0;91m'; \
+          NC='\\033[0m'; \
+          [ -z $(git rev-parse --is-inside-work-tree 2> /dev/null) ] \
+            && echo \"${RED}Current directory is not inside a git root ⛔️${NC}\" && return; \
+          [ \"$(git status --porcelain | egrep -v '^\\?\\?' | wc -l)\" -gt 0 ] \
+            && echo 'WC dirty 💩 ' && return; \
+          git fetch -qp; \
+          TARGET_BRANCH=\"$(git default)\"; \
+          CURRENT_BRANCH=\"$(git symbolic-ref --short HEAD)\"; \
+          TARGET_SHA=\"$(git rev-parse $TARGET_BRANCH)\"; \
+          TARGET_REMOTE_BRANCH=\"$(git rev-parse --abbrev-ref --symbolic-full-name $TARGET_BRANCH@{u})\"; \
+          TARGET_REMOTE_SHA=\"$(git rev-parse $TARGET_REMOTE_BRANCH)\"; \
+          [ \"$TARGET_SHA\" = \"$TARGET_REMOTE_SHA\" ] \
+            && echo \"$CYAN$TARGET_BRANCH$NC is already up to date with $CYAN$TARGET_REMOTE_BRANCH$NC ✅\" && return; \
+          echo \"Pulling the latest changes from $CYAN$TARGET_REMOTE_BRANCH$NC into your $CYAN$TARGET_BRANCH$NC...\"; \
+          git checkout -q \"${TARGET_BRANCH}\" && \
+          git pull origin \"${TARGET_BRANCH}\" && \
+          git submodule update --init; \
+          [ \"$CURRENT_BRANCH\" != \"$TARGET_BRANCH\" ] \
+            && git checkout -q \"$CURRENT_BRANCH\"; \
+          }; f"
+
+  ## Automatically move your current branch on top of the tip of the default branch.
+  ## @see `rebase`
+  tipbase = "!f() { \
+             set -eu; \
+             CYAN='\\033[0;36m'; \
+             RED='\\033[0;91m'; \
+             NC='\\033[0m'; \
+             [ -z \"$(git rev-parse --is-inside-work-tree 2> /dev/null)\" ] \
+               && echo \"${RED}Current directory is not inside a git root ⛔️${NC}\" \
+               && return; \
+             [ \"$(git status --porcelain | egrep -v '^\\?\\?' | wc -l)\" -gt 0 ] \
+               && echo 'WC dirty 💩 ' \
+               && return; \
+             git fetch -q; \
+             TARGET_BRANCH=\"$(git default)\"; \
+             CURRENT_BRANCH=\"$(git symbolic-ref --short HEAD)\"; \
+             [ \"$CURRENT_BRANCH\" = \"$TARGET_BRANCH\" ] \
+               && echo \"You cannot do this on $CYAN$TARGET_BRANCH$NC 🙄\" && return; \
+             CURRENT_SHA=\"$(git rev-parse @)\"; \
+             REMOTE_SHA=\"$(git for-each-ref --format='%(upstream:short)' $CURRENT_SHA)\"; \
+             [ "$REMOTE_SHA" ] \
+               && REMOTE_MERGE_BASE_SHA=\"$(git merge-base @ @{u})\" \
+               && [ \"$CURRENT_SHA\" != \"$REMOTE_SHA\" ] && [ \"$CURRENT_SHA\" = \"$REMOTE_MERGE_BASE_SHA\" ] \
+                 && echo \"You need to pull the latest changes for $CYAN$CURRENT_BRANCH$NC 👻\" && return; \
+             TARGET_REMOTE_BRANCH=\"$(git rev-parse --abbrev-ref --symbolic-full-name $TARGET_BRANCH@{u})\"; \
+             TARGET_REMOTE_SHA=\"$(git rev-parse $TARGET_REMOTE_BRANCH)\"; \
+             TARGET_MERGE_BASE_SHA=\"$(git merge-base $TARGET_REMOTE_BRANCH $CURRENT_BRANCH)\"; \
+             [ \"$TARGET_REMOTE_SHA\" = \"$TARGET_MERGE_BASE_SHA\" ] \
+               && echo \"$CYAN$CURRENT_BRANCH$NC is already on top of the latest $CYAN$TARGET_REMOTE_BRANCH$NC ✅\" && return; \
+             echo \"Tipbasing $CYAN$CURRENT_BRANCH$NC on top of the latest $CYAN$TARGET_REMOTE_BRANCH$NC...\"; \
+             echo "git rebase --onto $TARGET_REMOTE_BRANCH $TARGET_MERGE_BASE_SHA $CURRENT_BRANCH"; \
+             git rebase --onto \"$TARGET_REMOTE_BRANCH\" \"$TARGET_MERGE_BASE_SHA\" \"$CURRENT_BRANCH\" \
+               && echo \"\n✨  SUCCESS  ✨\n\" \
+               && echo \"Don't forget to force push your shiny new tipbase 💎\"; \
+            }; f"
+
+  ## Automatically move your current branch on top of the tip of the default branch
+  ## and update local default branch to latest origin changes.
+  tipsync = "!f() { git sync && git tipbase; }; f"
+
+  ## Start interactive rebasing for a branch (starting from default branch or the given second parameter)
+  ## @param Startpoint (commit ID or number of latest commits, defaults to branchpoint from master)
+  ## @see `rebase`
+  reb = "!f() { \
+         CYAN='\\033[0;36m'; \
+         RED='\\033[0;91m'; \
+         NC='\\033[0m'; \
+         [ -z \"$(git rev-parse --is-inside-work-tree 2> /dev/null)\" ] \
+           && echo \"${RED}Current directory is not inside a git root ⛔️${NC}\" && return; \
+         [ \"$(git status --porcelain | egrep -v '^\\?\\?' | wc -l)\" -gt 0 ] && echo 'WC dirty 💩 ' && return; \
+         [ \"$(git symbolic-ref --short HEAD)\" = \"$(git default)\" ] && echo 'Not on a branch!' && return; \
+         if [ -z "$1" ]; then \
+           TARGET_BRANCH=\"$(git default)\"; \
+           TARGET_REMOTE_BRANCH=\"$(git rev-parse --abbrev-ref --symbolic-full-name $TARGET_BRANCH@{u})\"; \
+           COMMIT=\"$(git merge-base ${TARGET_REMOTE_BRANCH} HEAD)\"; \
+         elif [ 0$1 -eq 0$1 ] 2>/dev/null; then \
+           COMMIT=HEAD~\"$1\"; \
+         else \
+           COMMIT=\"$1\"; \
+         fi; \
+         git rebase -i --autosquash \"$COMMIT\"; \
+        }; f"
+
+  ## Credit an author on the latest commit
+  ## @param Name
+  ## @param Email
+  ## @see `commit`
+  credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
+
+  ## Rebase (squash/reorder) local changes, all commits on branch that are not pushed.
+  rebl = "!f() { git rebase -i --autosquash \"$(git rev-parse origin/\"$(git symbolic-ref --short HEAD)\")\"; }; f"
+
+  ## View SHA, date, description and credit
+  ## @see `log`
+  l = log --pretty=format:'%C(yellow)%H  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --date=short --color=always
+
+  ## View log and preview via fzf
+  ## @see `l`
+  lp = "!f() { \
+          set -eu; \
+          git l \
+          | fzf --bind 'enter:become(for word in {+1}; do echo $word ; done)' \
+                --no-select-1 \
+                --height=80% \
+                --ansi \
+                --reverse \
+                --preview 'git show --color=always {1}' \
+           ; \
+          }; f"
+
+  ## Add graph to git l
+  ## @see `l`
+  lg = l --graph
+
+  ## Find branches containing commit
+  ## @param Commit ID
+  fb = "!f() { git branch -a --contains \"$1\"; }; f"
+
+  ## Find tags containing commit
+  ## @param Commit ID
+  ft = "!f() { git describe --always --contains \"$1\"; }; f"
+
+  ## Find commits by source code
+  ## @param Search pattern
+  fcs = "!f() { git l -S\"${1:- }\"; }; f"
+
+  ## Find commits by source code and preview them via fzf
+  ## @param Search pattern
+  fcsp = "!f() { \
+          set -eu; \
+          git fcs \"${1:- }\" \
+          | fzf --bind 'enter:become(for word in {+1}; do echo $word ; done)' \
+                --no-select-1 \
+                --height=80% \
+                --ansi \
+                --reverse \
+                --preview 'git show --color=always {1}' \
+           ; \
+          }; f"
+
+
+  ## Find commits by commit message
+  ## @param Search pattern
+  fcm = "!f() { git l --grep=\"$1\"; }; f"
+
+  ## Find commits by commit message and preview them via fzf
+  ## @param Search pattern
+  fcmp = "!f() { \
+          set -eu; \
+          git fcm \"${1:- }\" \
+          | fzf --bind 'enter:become(for word in {+1}; do echo $word ; done)' \
+                --no-select-1 \
+                --height=80% \
+                --ansi \
+                --reverse \
+                --preview 'git show --color=always {1}' \
+           ; \
+          }; f"
+
+  ## Review branch changes by files
+  ## @see diff
+  reviewf = "!f() { \
+             set -eu; \
+             git diff $(git merge-base $(git default) HEAD)..HEAD --name-status \
+             | fzf --bind 'enter:become(for word in {+2}; do echo $word ; done)' \
+                   --no-select-1 \
+                   --height=80% \
+                   --ansi \
+                   --reverse \
+                   --preview 'if [[ -f "{2}" ]]; then \
+                                git diff --color=always $(git default)..HEAD {2}; \
+                              elif [[ "{1}" -eq "D" ]]; then \
+                                echo The file has been deleted ; \
+                              fi ;' \
+              ; \
+            }; f"
+
+  ## Review branch changes by commits
+  ## @see diff
+  reviewc = "!f() { \
+             set -eu; \
+             git l $(git merge-base $(git default) HEAD)..HEAD \
+             | fzf --bind 'enter:become(for word in {+1}; do echo $word ; done)' \
+                   --no-select-1 \
+                   --height=80% \
+                   --ansi \
+                   --reverse \
+                   --preview 'git show --color=always {1}' \
+              ; \
+            }; f"
