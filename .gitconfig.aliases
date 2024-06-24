@@ -347,3 +347,18 @@
                    --preview 'git show --color=always {1}' \
               ; \
             }; f"
+
+  ## Remove branch which have been removed from origin
+  removebranches = "!f() { \
+                    git fetch -p ; \
+                    git branch --format='%(refname:short) %(upstream:track,nobracket)' \
+                    | while read -r branch status ; do \
+                        if [[ "$status" == "gone" ]]; then \
+                          git branch -D "$branch"; \
+                        fi ; \
+                      done ; \
+                   }; f"
+
+  ## Alias for removebranches
+  ## @see `removebranches`
+  rb = removebranches
