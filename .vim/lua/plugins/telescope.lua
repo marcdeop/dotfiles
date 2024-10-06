@@ -10,6 +10,7 @@ vim.keymap.set("n", "<leader>fd", "<cmd>Telescope diagnostics<CR>", {noremap=tru
 vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<CR>", {noremap=true})
 vim.keymap.set("n", "<leader>fg", "<cmd>Telescope grep_string<CR>", {noremap=true})
 vim.keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", {noremap=true})
+vim.keymap.set("n", "<leader>fj", "<cmd>Telescope jumplist<CR>", {noremap=true})
 vim.keymap.set("n", "<leader>fk", "<cmd>Telescope keymaps<CR>", {noremap=true})
 vim.keymap.set("n", "<leader>fl", "<cmd>Telescope live_grep<CR>", {noremap=true})
 vim.keymap.set("n", "<leader>fm", "<cmd>Telescope marks<CR>", {noremap=true})

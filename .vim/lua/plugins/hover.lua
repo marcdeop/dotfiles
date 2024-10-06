@@ -4,7 +4,7 @@ require("hover").setup {
                 require("hover.providers.lsp")
                 -- require('hover.providers.gh')
                 -- require('hover.providers.gh_user')
-                -- require('hover.providers.jira')
+                require('hover.providers.jira')
                 -- require('hover.providers.dap')
                 -- require('hover.providers.man')
                 require('hover.providers.dictionary')
@@ -30,4 +30,4 @@ require("hover").setup {
 
         -- Mouse support
         vim.keymap.set('n', '<MouseMove>', require('hover').hover_mouse, { desc = "hover.nvim (mouse)" })
-        vim.o.mousemoveevent = false
+        vim.o.mousemoveevent = true
