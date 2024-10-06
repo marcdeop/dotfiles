@@ -1,6 +1,4 @@
 """"""""""""""
-"  vim-plug  "
-""""""""""""""
 function! BuildBashLanguageServer(info)
   !PATH="/usr/lib/node_modules/yarn/bin/:$PATH" yarn install
   !PATH="/usr/lib/node_modules/yarn/bin/:$PATH" yarn run compile
@@ -21,15 +19,6 @@ function! BuildJavascriptLanguageServer(info)
   !npm install && npm run build && git checkout -- package-lock.json
 endfunction
 
-function! BuildPhpLanguageServer(info)
-  !composer install && composer run-script parse-stubs
-endfunction
-
-function! BuildPuppetLanguageServer(info)
-  !bundle install
-  !bundle exec rake gem_revendor
-endfunction
-
 
 call plug#begin('~/.vim/plugged')
 Plug 'aklt/plantuml-syntax'                                                                           " Syntax file for plantuml.
@@ -46,9 +35,10 @@ Plug 'cyansprite/Extract'                                                       
 Plug 'dracula/vim'                                                                                    " Dracula colorscheme for vim.
 Plug 'easymotion/vim-easymotion'                                                                      " Vim motion on speed!.
 Plug 'editorconfig/editorconfig-vim'                                                                  " Follow .editorconfig settings in projects.
+Plug 'ellisonleao/glow.nvim'                                                                          " Preview markdown code directly in your neovim terminal
 Plug 'fenetikm/falcon'                                                                                " A colour scheme for terminals, Vim and friends.
-Plug 'folke/noice.nvim'                                                                               " A plugin that completely replaces the UI for messages, cmdline and the popupmenu
 Plug 'godlygeek/tabular'                                                                              " Align text easily.
+Plug 'github/copilot.vim'                                                                             " OpenAI Codex to suggest code and entire functions in real-time right
 Plug 'hashivim/vim-terraform'                                                                         " Terraform filetype and highlight
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-cmdline'
@@ -56,9 +46,8 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-nvim-lua'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/nvim-cmp'
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 'markdown' }          " Markdown preview plugin for neovim.
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
 Plug 'junegunn/fzf.vim'                                                                               " fuzzy finder for vim.
-Plug 'junegunn/goyo.vim'                                                                              " Distraction-free writing in Vim.
 Plug 'junegunn/gv.vim'                                                                                " Git commit browser.
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'L3MON4D3/LuaSnip', {'tag': 'v1.*', 'do': 'make install_jsregexp'}
@@ -68,29 +57,27 @@ Plug 'lifepillar/vim-solarized8'                                                
 Plug 'lukas-reineke/indent-blankline.nvim'                                                            " Add indentation guides to Neovim
 Plug 'mads-hartmann/bash-language-server', { 'do': function('BuildBashLanguageServer') }              " A language server for Bash.
 Plug 'majutsushi/tagbar'                                                                              " Vim plugin that displays tags in a window, ordered by scope
-Plug 'marcdeop/php-language-server', { 'do': function('BuildPhpLanguageServer'), 'branch': 'rename' } " Language server protocol for php.
 Plug 'mfussenegger/nvim-lint',                                                                        " An asynchronous linter plugin for Neovim complementary to the built-in Language Server Protocol support.
 Plug 'MicahElliott/Rocannon',                                                                         " Vim for Ansible playbooks.
 Plug 'mileszs/ack.vim'                                                                                " Run your favorite search tool from vim.
 Plug 'morhetz/gruvbox'                                                                                " Gruvbox colorscheme for vim.
+Plug 'nanozuki/tabby.nvim'                                                                            " A highly configurable, and neovim style tabline plugin. Use your nvim tabs as a workspace multiplexer!
 Plug 'MunifTanjim/nui.nvim'                                                                           " UI Component Library for Neovim.
 Plug 'navarasu/onedark.nvim'                                                                          " Dark and Light Themes for neovim >= 0.5 based on Atom One Dark & Atom One Light
 Plug 'neovim/nvim-lspconfig'                                                                          " Configs for the Nvim LSP client (:help lsp).
 Plug 'nvim-lua/plenary.nvim'                                                                          " All the lua functions I don't want to write twice.
 Plug 'nvim-lualine/lualine.nvim'                                                                      " A blazing fast and easy to configure Neovim statusline written in Lua.
 Plug 'nvim-neo-tree/neo-tree.nvim'                                                                    " Browse the file system and other tree like structures in whatever style suits you
-Plug 'nvim-telescope/telescope.nvim', { 'branch': 'master' }                                          " Highly extendable fuzzy finder over lists.
+Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }                                           " Highly extendable fuzzy finder over lists.
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}                                           " Simple and easy way to use the interface for tree-sitter
 Plug 'npmiller/vreeze'                                                                                " Breeze inspired vim colorscheme
 Plug 'pearofducks/ansible-vim', { 'do': 'cd ./UltiSnips; ./generate.py' }
 Plug 'peterhoeg/vim-qml'                                                                              " QML syntax file for VIM
-Plug 'puppetlabs/puppet-editor-services', { 'do': function('BuildPuppetLanguageServer') }             " Puppet Language support for the Language Server Protocol.
+Plug 'pwntester/octo.nvim'                                                                            " Edit and review GitHub issues and pull requests from the comfort of your favorite editor.
 Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 Plug 'rakr/vim-one'                                                                                   " Adaptation of one-light and one-dark colorschemes for Vim.
 Plug 'ray-x/lsp_signature.nvim'                                                                       " Show function signature when you type.
-Plug 'rcarriga/nvim-notify'                                                                           " A fancy, configurable, notification manager for NeoVim
 Plug 'rmagatti/goto-preview'                                                                          " Preview native LSP's goto definition, type definition, implementation, and references calls in floating windows.
-Plug 'rodjek/vim-puppet'                                                                              " Make vim more puppet friendly!.
 Plug 'sainnhe/gruvbox-material'                                                                       " Gruvbox fork.
 Plug 'shumphrey/fugitive-gitlab.vim'                                                                  " Allows use of vim-fugitive with gitlab repositories
 Plug 'Shougo/echodoc.vim'                                                                             " Show function signature and inline doc.
@@ -147,7 +134,7 @@ set diffopt+=vertical             " Open diff in vertical split
 set rtp^=/usr/share/vim/vimfiles/ " Make sure we read vimfiles ( in case we use nvim)
 set cmdheight=1                   " Give more space for displaying messages
 set updatetime=300                " Reduce to 300 because default is 4000!
-set showtabline=0                 " Do not show the tab bar on the top. Beware of airline!
+set showtabline=1                 " Show tabline if there are at least two tabs
 
 " handling proper lenght of lines
 set wrap
@@ -181,7 +168,7 @@ let g:clipboard = {
       \   'cache_enabled': 1,
       \ }
 
-map <leader>v :set paste!<cr> " toggle paste mode
+map <leader>v            :set paste!<cr> " toggle paste mode
 nnoremap <Leader>n :Neotree toggle right<cr>
 nnoremap <leader>b :Neotree toggle float buffers<cr>
 nnoremap <leader>g :Neotree toggle float git_status<cr>
@@ -341,6 +328,11 @@ nmap <silent><leader>ge :Gedit<cr>
 nmap <silent><leader>gr :Gread<cr>
 nmap <silent><leader>gb :Gblame<cr>
 
+""""""""""""""""
+"  indentLine  "
+""""""""""""""""
+let g:indentLine_setConceal = 0
+
 """"""""""""""""""""""
 "  Markdown Preview  "
 """"""""""""""""""""""
@@ -350,6 +342,10 @@ let g:mkdp_refresh_slow = 0
 let g:mkdp_command_for_global = 0
 let g:mkdp_open_to_the_world = 0
 let g:mkdp_browser = 'falkon'
+function OpenMarkdownPreview (url)
+  execute 'silent ! open -a Google\ Chrome -n --args --new-window ' . a:url
+endfunction
+let g:mkdp_browserfunc = 'OpenMarkdownPreview'
 let g:mkdp_preview_options = {
     \ 'mkit': {},
     \ 'katex': {},
@@ -454,6 +450,11 @@ nnoremap <silent> <c-\> :TmuxNavigatePrevious<cr>
 let g:UltiSnipsListSnippets='<c-l>'
 let g:UltiSnipsEditSplit='vertical'           " Open snips vertically
 let g:UltiSnipsSnippetsDir='~/.vim/UltiSnips' " Store snips in this folder
+
+"""""""""""""""""""""""
+"  vim-pandoc-syntax  "
+"""""""""""""""""""""""
+let g:pandoc#syntax#conceal#use = 0
 
 """""""""""
 "  Vimux  "
