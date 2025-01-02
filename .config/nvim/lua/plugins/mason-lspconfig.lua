@@ -11,6 +11,7 @@ require("mason-lspconfig").setup {
     "marksman",
     "neocmake",
     "pylsp",
+    "ruff",
     "rust_analyzer",
     "terraformls",
     "tflint",

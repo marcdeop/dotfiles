@@ -1,36 +1,42 @@
 require('goto-preview').setup {
   -- Width of the floating window
-  width = 120;
+  width = 120,
   -- Height of the floating window
-  height = 15;
+  height = 15,
   -- Border characters of the floating window
-  border = {"↖", "─" ,"┐", "│", "┘", "─", "└", "│"};
+  border = {"↖", "─" ,"┐", "│", "┘", "─", "└", "│"},
   -- Bind default mappings
-  default_mappings = false;
+  default_mappings = false,
   -- Print debug information
-  debug = false;
+  debug = false,
   -- 0-100 opacity level of the floating window where 100 is fully transparent.
-  opacity = nil;
+  opacity = nil,
   -- Binds arrow keys to resizing the floating window.
-  resizing_mappings = false;
+  resizing_mappings = false,
   -- A function taking two arguments, a buffer and a window to be ran as a hook.
-  post_open_hook = nil;
+  post_open_hook = nil,
+  -- A function taking two arguments, a buffer and a window to be ran as a hook.
+  post_close_hook = nil,
   -- Configure the telescope UI for slowing the references cycling window.
   references = {
     telescope = require("telescope.themes").get_dropdown({
                                                            hide_preview = false
                                                          })
-  };
+  },
   -- These two configs can also be passed down to the goto-preview definition
   -- and implementation calls for one off "peak" functionality.
   -- Focus the floating window when opening it.
-  focus_on_open = true;
+  focus_on_open = true,
   -- Dismiss the floating window when moving the cursor.
-  dismiss_on_move = false;
+  dismiss_on_move = false,
   -- passed into vim.api.nvim_win_close's second argument. See :h nvim_win_close
   force_close = true,
   -- the bufhidden option to set on the floating window. See :h bufhidden
   bufhidden = "wipe",
+  -- Whether to set the preview window title as the filename
+  preview_window_title = { enable = true, position = "left" },
+  -- Starting zindex for the stack of floating windows
+  zindex = 1,
 }
 
 vim.keymap.set("n", "gpd", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", {noremap=true})
