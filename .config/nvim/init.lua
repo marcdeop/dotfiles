@@ -1,8 +1,3 @@
-vim.cmd([[
-set runtimepath^=~/.vim runtimepath+=~/.vim/after
-let &packpath = &runtimepath
-]])
-
 --------------------------------------------------------------------------------
 --                  Direct import from original .vimrc file                   --
 --------------------------------------------------------------------------------
@@ -28,8 +23,9 @@ function! BuildJavascriptLanguageServer(info)
 endfunction
 
 
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 Plug 'aklt/plantuml-syntax'                                                                           " Syntax file for plantuml.
+Plug 'andersevenrud/cmp-tmux'                                                                         " Tmux completion source for nvim-cmp.
 Plug 'andymass/vim-matchup'                                                                           " Extended matching with '%'.
 Plug 'anuvyklack/fold-preview.nvim'
     \ | Plug 'anuvyklack/keymap-amend.nvim'                                                           " Preview close folds, without opening them.
@@ -38,13 +34,16 @@ Plug 'benmills/vimux'                                                           
 Plug 'brooth/far.vim'                                                                                 " Find and replace for vim.
 Plug 'chriskempson/base16-vim'                                                                        " Base16 for Vim.
 Plug 'christoomey/vim-tmux-navigator'                                                                 " Navigate seamlessly between vim and tmux splits.
+Plug 'CopilotC-Nvim/CopilotChat.nvim'                                                                 " Copilot Chat for Neovim
 Plug 'cquery-project/cquery',{ 'do': function('BuildCquery') }                                        " C/C++ language server.
 Plug 'cyansprite/Extract'                                                                             " Extract; Draw forth what really matters.
 Plug 'dracula/vim'                                                                                    " Dracula colorscheme for vim.
+Plug 'Dynge/gitmoji.nvim'                                                                             " Gitmojis for Neovim using nvim-cmp
 Plug 'easymotion/vim-easymotion'                                                                      " Vim motion on speed!.
 Plug 'editorconfig/editorconfig-vim'                                                                  " Follow .editorconfig settings in projects.
 Plug 'ellisonleao/glow.nvim'                                                                          " Preview markdown code directly in your neovim terminal
 Plug 'fenetikm/falcon'                                                                                " A colour scheme for terminals, Vim and friends.
+Plug 'folke/noice.nvim'                                                                               " Replace the UI for messages, cmdline and the popupmenu.
 Plug 'godlygeek/tabular'                                                                              " Align text easily.
 Plug 'github/copilot.vim'                                                                             " OpenAI Codex to suggest code and entire functions in real-time right
 Plug 'hashivim/vim-terraform'                                                                         " Terraform filetype and highlight
@@ -55,7 +54,7 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-nvim-lua'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/nvim-cmp'
-"Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
 Plug 'junegunn/fzf.vim'                                                                               " fuzzy finder for vim.
 Plug 'junegunn/gv.vim'                                                                                " Git commit browser.
 Plug 'kyazdani42/nvim-web-devicons'
@@ -80,9 +79,12 @@ Plug 'nvim-neo-tree/neo-tree.nvim'                                              
 Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }                                           " Highly extendable fuzzy finder over lists.
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}                                           " Simple and easy way to use the interface for tree-sitter
 Plug 'npmiller/vreeze'                                                                                " Breeze inspired vim colorscheme
+Plug 'onsails/diaglist.nvim'                                                                          " Live-updating Neovim LSP diagnostics in quickfix and loclist
+Plug 'onsails/lspkind.nvim'                                                                           " Add vscode-like pictograms to neovim built-in lsp
 Plug 'OXY2DEV/markview.nvim'                                                                          " A highly-customisable & feature rich markdown previewer inside Neovim.
 Plug 'pearofducks/ansible-vim', { 'do': 'cd ./UltiSnips; ./generate.py' }
 Plug 'peterhoeg/vim-qml'                                                                              " QML syntax file for VIM
+Plug 'petertriho/cmp-git'                                                                             " Git source for hrsh7th/nvim-cmp
 Plug 'pwntester/octo.nvim'                                                                            " Edit and review GitHub issues and pull requests from the comfort of your favorite editor.
 Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 Plug 'rakr/vim-one'                                                                                   " Adaptation of one-light and one-dark colorschemes for Vim.
@@ -111,6 +113,8 @@ Plug 'williamboman/mason.nvim'                                                  
 Plug 'williamboman/mason-lspconfig.nvim'                                                              " Bridges mason.nvim with the lspconfig plugin - making it easier to use both plugins together.
 Plug 'windwp/nvim-autopairs'                                                                          " A super powerful autopair plugin for Neovim that supports multiple characters.
 Plug 'Yggdroot/indentLine'                                                                            " Display thin vertical lines at each indentation level for code indented with spaces.
+Plug 'zbirenbaum/copilot.lua'
+Plug 'zbirenbaum/copilot-cmp'
 call plug#end()
 
 ]])
@@ -123,8 +127,8 @@ call plug#end()
 --------------------------------------------------------------------------------
 vim.opt.shortmess:append("I") -- Do not show intro message
 vim.opt.shortmess:append("c") -- Do not pass messages to |ins-completion-menu|
-vim.opt.undodir   = vim.fn.expand("~") .. "/.vim/undo//"
-vim.opt.directory = vim.fn.expand("~") .. "/.vim/swapfiles//"
+vim.opt.undodir   = vim.fn.expand("~") .. "/.config/nvim/undo//"
+vim.opt.directory = vim.fn.expand("~") .. "/.config/nvim/swapfiles//"
 vim.opt.tags = "./tags;"
 vim.opt.undofile = true                -- Keep file with undo history
 vim.opt.laststatus = 2                 -- Always show status line
@@ -181,6 +185,7 @@ vim.g.clipboard = {
 }
 -- map <leader>v            :set paste!<cr> " toggle paste mode
 vim.g.mapleader = ','
+vim.g.localleader = ','
 vim.keymap.set('n', '<Leader>n', ':Neotree toggle right<cr>')
 vim.keymap.set('n', '<leader>b', ':Neotree toggle float buffers<cr>')
 vim.keymap.set('n', '<leader>g', ':Neotree toggle float git_status<cr>')
@@ -271,9 +276,9 @@ noremap <silent> ,u
 --------------------------------------------------------------------------------
 --                                 Appearance                                 --
 --------------------------------------------------------------------------------
-vim.opt.background = "dark"
+vim.opt.background    = "dark"
 vim.opt.termguicolors = true
-vim.g.onedark_config = {
+vim.g.onedark_config  = {
     style = 'dark',
 }
 vim.cmd('colorscheme onedark')
@@ -287,11 +292,11 @@ vim.opt.listchars = { tab = '·-', trail = '·' } -- Mark 'misplaced' characters
 --------------------------------------------------------------------------------
 --                                Indentation                                 --
 --------------------------------------------------------------------------------
-vim.opt.tabstop = 2
-vim.opt.shiftwidth = 0 -- setting it to zero we make it  be the same as tabstop
-vim.opt.cindent = true
+vim.opt.tabstop     = 2
+vim.opt.shiftwidth  = 0
+vim.opt.cindent     = true
 vim.opt.smartindent = true
-vim.opt.expandtab = true
+vim.opt.expandtab   = true
 --------------------------------------------------------------------------------
 --                             End of Indentation                             --
 --------------------------------------------------------------------------------
@@ -336,9 +341,9 @@ vim.keymap.set('i', '<c-v>', '<Plug>(extract-completeList)')
 --  Fugitive  --
 ----------------
 vim.keymap.set('n', '<leader>gs', ':Git status<cr>', { silent = true })
-vim.keymap.set('n', '<leader>ge', ':Gedit<cr>', { silent = true })
-vim.keymap.set('n', '<leader>gr', ':Gread<cr>', { silent = true })
-vim.keymap.set('n', '<leader>gb', ':Git blame<cr>', { silent = true })
+vim.keymap.set('n', '<leader>ge', ':Gedit<cr>',      { silent = true })
+vim.keymap.set('n', '<leader>gr', ':Gread<cr>',      { silent = true })
+vim.keymap.set('n', '<leader>gb', ':Git blame<cr>',  { silent = true })
 
 ------------------
 --  IndentLine  --
@@ -427,9 +432,9 @@ vim.g['mkdx#settings'] = {
 --  Tmux  --
 ------------
 vim.g.tmux_navigator_no_mappings = 1
-vim.keymap.set('n', '<c-h>', ':TmuxNavigateLeft<cr>', { silent = true })
-vim.keymap.set('n', '<c-j>', ':TmuxNavigateDown<cr>', { silent = true })
-vim.keymap.set('n', '<c-k>', ':TmuxNavigateUp<cr>', { silent = true })
+vim.keymap.set('n', '<c-h>', ':TmuxNavigateLeft<cr>',  { silent = true })
+vim.keymap.set('n', '<c-j>', ':TmuxNavigateDown<cr>',  { silent = true })
+vim.keymap.set('n', '<c-k>', ':TmuxNavigateUp<cr>',    { silent = true })
 vim.keymap.set('n', '<c-l>', ':TmuxNavigateRight<cr>', { silent = true })
 vim.keymap.set('n', '<c-\\>', ':TmuxNavigatePrevious<cr>', { silent = true })
 
@@ -438,7 +443,7 @@ vim.keymap.set('n', '<c-\\>', ':TmuxNavigatePrevious<cr>', { silent = true })
 -----------------
 vim.g.UltiSnipsListSnippets = '<c-l>'
 vim.g.UltiSnipsEditSplit = 'vertical'           -- Open snips vertically
-vim.g.UltiSnipsSnippetsDir = vim.fn.expand("~") .. '/.vim/UltiSnips' -- Store snips in this folder
+vim.g.UltiSnipsSnippetsDir = vim.fn.expand("~") .. '/.config/nvim/UltiSnips' -- Store snips in this folder
 
 -------------
 --  Vimux  --
