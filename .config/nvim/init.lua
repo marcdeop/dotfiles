@@ -37,6 +37,7 @@ Plug 'christoomey/vim-tmux-navigator'                                           
 Plug 'CopilotC-Nvim/CopilotChat.nvim'                                                                 " Copilot Chat for Neovim
 Plug 'cquery-project/cquery',{ 'do': function('BuildCquery') }                                        " C/C++ language server.
 Plug 'cyansprite/Extract'                                                                             " Extract; Draw forth what really matters.
+Plug 'debugloop/telescope-undo.nvim'                                                                  " Visualize your undo tree and fuzzy-search changes in it.
 Plug 'dracula/vim'                                                                                    " Dracula colorscheme for vim.
 Plug 'Dynge/gitmoji.nvim'                                                                             " Gitmojis for Neovim using nvim-cmp
 Plug 'easymotion/vim-easymotion'                                                                      " Vim motion on speed!.

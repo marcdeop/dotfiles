@@ -19,3 +19,4 @@ vim.keymap.set("n", "<leader>fr", "<cmd>Telescope registers<CR>", {noremap=true}
 vim.keymap.set("n", "<leader>ft", "<cmd>Telescope tags<CR>", {noremap=true})
 vim.keymap.set("n", "<leader>fs", "<cmd>Telescope lsp_document_symbols<CR>", {noremap=true})
 vim.keymap.set("n", "<leader>fws", "<cmd>Telescope lsp_workspace_symbols<CR>", {noremap=true})
+vim.keymap.set("n", "<leader>fu", "<cmd>Telescope undo<cr>")
