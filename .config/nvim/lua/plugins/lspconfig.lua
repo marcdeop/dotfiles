@@ -38,48 +38,49 @@ end
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local lsp_flags = {}
 
-require('lspconfig')['pylsp'].setup{
-  capabilities = capabilities,
-  on_attach = on_attach,
-  flags = lsp_flags,
-  settings = {
-    pylsp = {
-      configurationSources = { 'flake8' },
-      plugins = {
-        rope_autoimport = {
-          enabled = true,
-        },
-        pyflakes = {
-          enabled = false,
-        },
-        mccabe = {
-          enabled = true,
-          threshold = 5,
-        },
-        pycodestyle = {
-          enabled = true,
-        },
-        flake8 = {
-          enabled = false,
-          maxComplexity = 10,
-        },
-        pylint = {
-          enabled = true,
-          args = { '--init-hook "import sys; sys.path.append(\'/usr/lib/python3.12/site-packages/\'); sys.path.append(\'/home/marc/.local/lib/python3.12/site-packages\')"' },
-        },
-        isort = {
-          enabled = true,
-        },
-        autopep8 = {
-          enabled = false,
-        },
-        yapf = {
-          enabled = false,
-        },
-      }
-    }
-  }
-}
+require'lspconfig'.pyright.setup{}
+--require('lspconfig')['pylsp'].setup{
+--  capabilities = capabilities,
+--  on_attach = on_attach,
+--  flags = lsp_flags,
+--  settings = {
+--    pylsp = {
+--      configurationSources = { 'flake8' },
+--      plugins = {
+--        rope_autoimport = {
+--          enabled = true,
+--        },
+--        pyflakes = {
+--          enabled = false,
+--        },
+--        mccabe = {
+--          enabled = true,
+--          threshold = 5,
+--        },
+--        pycodestyle = {
+--          enabled = true,
+--        },
+--        flake8 = {
+--          enabled = false,
+--          maxComplexity = 10,
+--        },
+--        pylint = {
+--          enabled = true,
+--          args = { '--init-hook "import sys; sys.path.append(\'/usr/lib/python3.12/site-packages/\'); sys.path.append(\'/home/marc/.local/lib/python3.12/site-packages\')"' },
+--        },
+--        isort = {
+--          enabled = true,
+--        },
+--        autopep8 = {
+--          enabled = false,
+--        },
+--        yapf = {
+--          enabled = false,
+--        },
+--      }
+--    }
+--  }
+--}
 
 require('lspconfig')['dockerls'].setup{
   capabilities = capabilities,

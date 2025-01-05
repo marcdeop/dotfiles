@@ -58,6 +58,7 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
 Plug 'junegunn/fzf.vim'                                                                               " fuzzy finder for vim.
 Plug 'junegunn/gv.vim'                                                                                " Git commit browser.
+Plug 'kosayoda/nvim-lightbulb'                                                                        " VSCode 💡 for neovim's built-in LSP.
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'L3MON4D3/LuaSnip', {'tag': 'v1.*', 'do': 'make install_jsregexp'}
 Plug 'lewis6991/gitsigns.nvim'                                                                        " Super fast git decorations implemented purely in Lua.
