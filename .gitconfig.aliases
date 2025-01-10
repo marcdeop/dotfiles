@@ -257,7 +257,7 @@
   ## @see `l`
   lp = "!f() { \
           set -eu; \
-          git l \
+          git l ${*:-} \
           | fzf --bind 'enter:become(for word in {+1}; do echo $word ; done)' \
                 --no-select-1 \
                 --height=80% \
