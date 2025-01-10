@@ -106,6 +106,7 @@ Plug 'sourcegraph/javascript-typescript-langserver', { 'do': 'npm install && npm
 Plug 'stephpy/vim-yaml'                                                                               " Override vim syntax for yaml files
 Plug 'tpope/vim-fugitive'                                                                             " Git wrapper for vim.
 Plug 'tpope/vim-repeat'                                                                               " Enable repeating supported plugin maps with `.`
+Plug 'tpope/vim-rhubarb'                                                                              " If fugitive.vim is the Git, rhubarb.vim is the Hub.
 Plug 'tpope/vim-surround'                                                                             " Quoting/parenthesizing made simple.
 Plug 'tyru/open-browser.vim'                                                                          " Open URI with your favorite browser from your most favorite editor.
 Plug 'vim-utils/vim-man'                                                                              " View man pages in vim. Grep for the man pages.
