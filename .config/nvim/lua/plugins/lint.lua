@@ -1,6 +1,5 @@
 local lint = require("lint")
 lint.linters_by_ft = {
-  python     = {'mypy',},
   dockerfile = {'hadolint',},
   sh         = {'shellcheck',},
   yaml       = {'yamllint',}
