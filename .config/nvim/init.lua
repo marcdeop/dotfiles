@@ -56,6 +56,7 @@ Plug 'hrsh7th/cmp-nvim-lua'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
+Plug 'jay-babu/mason-nvim-dap.nvim'                                                                   " Bridges mason.nvim with the nvim-dap plugin - making it easier to use both plugins together.
 Plug 'junegunn/fzf.vim'                                                                               " fuzzy finder for vim.
 Plug 'junegunn/gv.vim'                                                                                " Git commit browser.
 Plug 'kyazdani42/nvim-web-devicons'
@@ -66,6 +67,7 @@ Plug 'lifepillar/vim-solarized8'                                                
 Plug 'lukas-reineke/indent-blankline.nvim'                                                            " Add indentation guides to Neovim
 Plug 'mads-hartmann/bash-language-server', { 'do': function('BuildBashLanguageServer') }              " A language server for Bash.
 Plug 'majutsushi/tagbar'                                                                              " Vim plugin that displays tags in a window, ordered by scope
+Plug 'mfussenegger/nvim-dap'                                                                          " A Debug Adapter Protocol client implementation for Neovim
 Plug 'mfussenegger/nvim-lint',                                                                        " An asynchronous linter plugin for Neovim complementary to the built-in Language Server Protocol support.
 Plug 'MicahElliott/Rocannon',                                                                         " Vim for Ansible playbooks.
 Plug 'mileszs/ack.vim'                                                                                " Run your favorite search tool from vim.
@@ -77,6 +79,7 @@ Plug 'neovim/nvim-lspconfig'                                                    
 Plug 'nvim-lua/plenary.nvim'                                                                          " All the lua functions I don't want to write twice.
 Plug 'nvim-lualine/lualine.nvim'                                                                      " A blazing fast and easy to configure Neovim statusline written in Lua.
 Plug 'nvim-neo-tree/neo-tree.nvim'                                                                    " Browse the file system and other tree like structures in whatever style suits you
+Plug 'nvim-neotest/nvim-nio'                                                                          " A library for asynchronous IO in Neovim, inspired by the asyncio library in Python
 Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }                                           " Highly extendable fuzzy finder over lists.
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}                                           " Simple and easy way to use the interface for tree-sitter
 Plug 'npmiller/vreeze'                                                                                " Breeze inspired vim colorscheme
@@ -90,6 +93,7 @@ Plug 'pwntester/octo.nvim'                                                      
 Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 Plug 'rakr/vim-one'                                                                                   " Adaptation of one-light and one-dark colorschemes for Vim.
 Plug 'ray-x/lsp_signature.nvim'                                                                       " Show function signature when you type.
+Plug 'rcarriga/nvim-dap-ui'                                                                           " A UI for nvim-dap which provides a good out of the box configuration.
 Plug 'rmagatti/goto-preview'                                                                          " Preview native LSP's goto definition, type definition, implementation, and references calls in floating windows.
 Plug 'sainnhe/gruvbox-material'                                                                       " Gruvbox fork.
 Plug 'shumphrey/fugitive-gitlab.vim'                                                                  " Allows use of vim-fugitive with gitlab repositories

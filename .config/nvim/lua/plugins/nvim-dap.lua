@@ -1,0 +1,26 @@
+local function opts(description)
+  return { noremap=true, silent=true, desc=description }
+end
+
+vim.keymap.set('n', '<F5>' ,      function() require('dap').continue() end         , opts("Continue"))
+vim.keymap.set('n', '<F10>',      function() require('dap').step_over() end        , opts("Step Over"))
+vim.keymap.set('n', '<F11>',      function() require('dap').step_into() end        , opts("Step into"))
+vim.keymap.set('n', '<F12>',      function() require('dap').step_out() end         , opts("Step out"))
+vim.keymap.set('n', '<leader>db', function() require('dap').toggle_breakpoint() end, opts("Toggle breakpoint in the current line"))
+vim.keymap.set('n', '<leader>dB', function() require('dap').set_breakpoint() end   , opts("Add a breakpoint in the current line"))
+vim.keymap.set('n', '<leader>dlb', function() require('dap').list_breakpoints() end   , opts("List all breakpoints into the quickfix window"))
+
+vim.keymap.set({'n', 'v'}, '<Leader>dh', function()
+  require('dap.ui.widgets').hover()
+end, opts("Evaluates the expression and displays the result in a floating window"))
+vim.keymap.set({'n', 'v'}, '<Leader>dp', function()
+  require('dap.ui.widgets').preview()
+end, opts("Evaluates the expression and displays the result in a preview window."))
+vim.keymap.set('n', '<leader>df', function()
+  local widgets = require('dap.ui.widgets')
+  widgets.centered_float(widgets.frames)
+end, opts("Opens the contents of the frames widget in a centered floating window."))
+vim.keymap.set('n', '<leader>ds', function()
+  local widgets = require('dap.ui.widgets')
+  widgets.centered_float(widgets.scopes)
+end, opts("Opens the contents of the scopes widget in a centered floating window."))
